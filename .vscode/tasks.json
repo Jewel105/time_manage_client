@@ -1,0 +1,14 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Run Shell Script",
+      "type": "shell",
+      "command": "dart ./lib/router/script.dart",
+      "presentation": {
+        "echo": true,
+        "reveal": "silent",
+      },
+    }
+  ]
+}
