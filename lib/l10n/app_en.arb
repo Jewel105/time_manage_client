@@ -1,3 +1,7 @@
 {
-  "home": "Home"
+  "home": "Home",
+  "task": "Task",
+  "category": "Category",
+  "statistics": "Statistics",
+  "mine": "Mine"
 }

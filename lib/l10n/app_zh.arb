@@ -1,3 +1,7 @@
 {
-  "home": "首页"
+  "home": "首页",
+  "task": "任务",
+  "category": "分类",
+  "statistics": "统计",
+  "mine": "我的"
 }

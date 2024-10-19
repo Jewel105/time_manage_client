@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:time_manage_client/common/app_theme.dart';
 import 'package:time_manage_client/router/create_routes.dart';
 
 void main() {
@@ -19,10 +20,7 @@ class MyApp extends StatelessWidget {
         builder: (_, __) {
           return MaterialApp(
             title: 'Time Manager',
-            theme: ThemeData(
-              colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-              useMaterial3: true,
-            ),
+            theme: appTheme,
             onGenerateRoute: CreateRoutes.generateRoute,
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: AppLocalizations.supportedLocales,
