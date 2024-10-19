@@ -7,11 +7,7 @@ class StorageUtil {
 
   static Future<void> init() async {
     _preferences = await SharedPreferencesWithCache.create(
-      cacheOptions: const SharedPreferencesWithCacheOptions(
-        // When an allowlist is included, any keys that aren't included cannot be used.
-        allowList: <String>{'repeat', 'action'},
-      ),
-    );
+        cacheOptions: const SharedPreferencesWithCacheOptions());
   }
 
   // 设置本地缓存
@@ -36,9 +32,9 @@ class StorageUtil {
   // 取出缓存
   static dynamic get(String key) {
     dynamic value = _preferences.get(key);
-    if (value.runtimeType.toString() == 'String') {
+    if (value is String) {
       try {
-        return json.decode(value as String);
+        return json.decode(value);
       } catch (err) {
         return value;
       }

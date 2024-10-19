@@ -4,5 +4,11 @@
   "category": "Category",
   "statistics": "Statistics",
   "mine": "Mine",
-  "addTask": "Add task"
+  "addTask": "Add task",
+  "loginTip": "You haven't logged in yet. Please log in first.",
+  "login": "Log In",
+  "forgotPassword": "Forgot password",
+  "register": "Register",
+  "nameOrEmail": "Username or email",
+  "password": "Password"
 }

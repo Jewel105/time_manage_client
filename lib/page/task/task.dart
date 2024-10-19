@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
-import 'package:time_manage_client/utils/string_util.dart';
+import 'package:time_manage_client/utils/index.dart';
 
 class Task extends StatelessWidget {
   const Task({super.key});

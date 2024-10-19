@@ -4,10 +4,6 @@ import 'package:intl/intl.dart';
 
 typedef FormatFn<T> = DateFormat Function([dynamic locale]);
 
-extension LocalizationExtension on BuildContext {
-  AppLocalizations get locale => AppLocalizations.of(this);
-}
-
 class StringUtil {
   /// 日期格式化，根据不同国家显示不同的日期顺序
   /// 不传format，默认格式：2023/10/06 12:56:34；

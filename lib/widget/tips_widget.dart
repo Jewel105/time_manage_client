@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class TipsPage extends StatelessWidget {
-  const TipsPage({super.key, required this.icon, required this.tip});
+class TipsWidget extends StatelessWidget {
+  const TipsWidget({super.key, required this.icon, required this.tip});
 
   final Widget icon;
   final String tip;
@@ -10,8 +11,10 @@ class TipsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
         child: Column(
+      mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         icon,
+        SizedBox(height: 8.w),
         Text(tip),
       ],
     ));
