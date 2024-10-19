@@ -12,7 +12,7 @@ class _Page404State extends State<Page404> {
   Widget build(BuildContext context) {
     return const Scaffold(
       body: Center(
-        child: Text("data not found! Return to the home page?"),
+        child: Text('data not found! Return to the home page?'),
       ),
     );
   }

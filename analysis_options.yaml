@@ -22,12 +22,12 @@ linter:
   # producing the lint.
   rules:
     prefer_single_quotes: true  # Uncomment to enable the `prefer_single_quotes` rule
-    always_put_required_named_parameters_first: true # Uncomment to enable the `always_put_required_named
     always_specify_types: true
     always_use_package_imports: true
     avoid_dynamic_calls: true
     avoid_empty_else: true
     avoid_equals_and_hash_code_on_mutable_classes: true
     avoid_print: true
+    constant_identifier_names: false
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options
