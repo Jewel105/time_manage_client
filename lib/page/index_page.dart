@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:time_manage_client/utils/string_util.dart';
 
 class IndexPage extends StatefulWidget {
   const IndexPage({super.key});
@@ -12,7 +13,7 @@ class _IndexPageState extends State<IndexPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("data"),
+        title: Text(context.locale.home),
       ),
       body: Text("data"),
     );

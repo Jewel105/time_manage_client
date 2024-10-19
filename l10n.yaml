@@ -1,0 +1,4 @@
+# 其他配置参考官网：https://docs.flutter.dev/ui/accessibility-and-internationalization/internationalization
+# arb-dir: lib/l10n # arb文件文件路径，默认 lib/l10n
+# template-arb-file: intl_en.arb # arb文件名的格式，默认是app_en.arb
+nullable-getter: false # Localizations.of(context)的返回值不可以为空
