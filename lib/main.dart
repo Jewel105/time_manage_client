@@ -3,11 +3,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:time_manage_client/router/create_routes.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const MyApp(seedColor: Colors.black));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({super.key, this.seed, required this.seedColor});
+  final Color seedColor;
+  final String? seed;
 
   @override
   Widget build(BuildContext context) {

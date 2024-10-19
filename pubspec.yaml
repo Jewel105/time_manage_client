@@ -11,6 +11,8 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.6
   flutter_screenutil: ^5.9.3
+  flutter_localization: ^0.2.2
+
 
 dev_dependencies:
   flutter_test:
@@ -19,6 +21,7 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  generate: true
 
   # To add assets to your application, add an assets section, like this:
   # assets:
