@@ -3,5 +3,6 @@
   "task": "Task",
   "category": "Category",
   "statistics": "Statistics",
-  "mine": "Mine"
+  "mine": "Mine",
+  "addTask": "Add task"
 }

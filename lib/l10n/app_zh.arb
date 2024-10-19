@@ -3,5 +3,6 @@
   "task": "任务",
   "category": "分类",
   "statistics": "统计",
-  "mine": "我的"
+  "mine": "我的",
+  "addTask": "添加任务"
 }
