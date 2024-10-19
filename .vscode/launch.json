@@ -5,22 +5,63 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "flutter(debug mode)",
-      "preLaunchTask": "Run Shell Script", 
-      "request": "launch",
-      "type": "dart"
-    },
-    {
-      "name": "flutter (profile mode)",
+      "name": "run (dev)",
+      "preLaunchTask": "Run Shell Script",
       "request": "launch",
       "type": "dart",
-      "flutterMode": "profile"
+      "args": [
+        "--dart-define",
+        "APP_ENV=dev"
+      ]
     },
     {
-      "name": "flutter (release mode)",
+      "name": "run (pro)",
       "request": "launch",
       "type": "dart",
-      "flutterMode": "release"
+      "args": [
+        "--dart-define",
+        "APP_ENV=pro"
+      ]
+    },
+    {
+      "name": "profile (dev)",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "profile",
+      "args": [
+        "--dart-define",
+        "APP_ENV=dev"
+      ]
+    },
+    {
+      "name": "profile (pro)",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "profile",
+      "args": [
+        "--dart-define",
+        "APP_ENV=pro"
+      ]
+    },
+    {
+      "name": "release (dev)",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "release",
+      "args": [
+        "--dart-define",
+        "APP_ENV=dev"
+      ]
+    },
+    {
+      "name": "release (pro)",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "release",
+      "args": [
+        "--dart-define",
+        "APP_ENV=pro"
+      ]
     }
   ]
 }

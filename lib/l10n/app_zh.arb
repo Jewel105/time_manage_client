@@ -10,5 +10,7 @@
   "forgotPassword": "忘记密码",
   "register": "注册",
   "nameOrEmail": "用户名或邮箱",
-  "password": "密码"
+  "password": "密码",
+  "confirm": "确认"
+
 }

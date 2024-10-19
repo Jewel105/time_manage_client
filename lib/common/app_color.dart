@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
 class AppColor {
-  static const Color appMainColor = Color(0xff121212);
+  static const Color appMainColor = Color.fromARGB(255, 160, 191, 255);
 
   static const Color bgWhiteColor = Color(0xffFFFFFF);
   static const Color bgGreyColor = Color(0xffF2F2F2);
+  static const Color bgMask = Color.fromARGB(108, 0, 0, 0); // 遮罩层
+
   static const Color lineColor = Color(0xffD2D2D2);
 
   static const Color textLightGreyColor = Color(0xff929292);

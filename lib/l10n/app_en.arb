@@ -10,5 +10,6 @@
   "forgotPassword": "Forgot password",
   "register": "Register",
   "nameOrEmail": "Username or email",
-  "password": "Password"
+  "password": "Password",
+  "confirm": "Confirm"
 }
