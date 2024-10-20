@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:time_manage_client/api/common_api.dart';
 import 'package:time_manage_client/common/app_color.dart';
-import 'package:time_manage_client/utils/extension_util.dart';
+import 'package:time_manage_client/common/constant.dart';
+import 'package:time_manage_client/router/nav_ctrl.dart';
+import 'package:time_manage_client/router/routes.dart';
+import 'package:time_manage_client/utils/index.dart';
 import 'package:time_manage_client/widget/main_button.dart';
 
 class LoginPage extends StatefulWidget {
@@ -15,6 +19,20 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final GlobalKey<FormBuilderState> _formKey = GlobalKey<FormBuilderState>();
+
+  void _toForgotPassword() {}
+
+  void _toRegister() {}
+
+  void _submit() async {
+    final bool valid = _formKey.currentState?.validate() ?? false;
+    if (!valid) return;
+    Map<String, dynamic> data =
+        _formKey.currentState?.instantValue ?? <String, dynamic>{};
+    String token = await CommonApi.login(data);
+    await StorageUtil.set(Constant.TOKEN, token);
+    NavCtrl.switchTab(Routes.home);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +49,7 @@ class _LoginPageState extends State<LoginPage> {
             children: <Widget>[
               SizedBox(height: 32.w),
               FormBuilderTextField(
-                name: 'email',
+                name: 'name',
                 decoration:
                     InputDecoration(labelText: context.locale.nameOrEmail),
                 validator: FormBuilderValidators.compose(
@@ -54,24 +72,21 @@ class _LoginPageState extends State<LoginPage> {
               ),
               SizedBox(height: 8.w),
               GestureDetector(
-                onTap: () {},
+                onTap: _toForgotPassword,
                 child: Text(context.locale.forgotPassword),
               ),
               SizedBox(height: 64.w),
               MainButton(
                 width: double.infinity,
                 text: context.locale.login,
-                onPressed: () {
-                  _formKey.currentState?.validate();
-                  debugPrint(_formKey.currentState?.instantValue.toString());
-                },
+                onPressed: _submit,
               ),
               SizedBox(height: 16.w),
               MainButton(
                 bgColor: AppColor.bgGreyColor,
                 width: double.infinity,
                 text: context.locale.register,
-                onPressed: () {},
+                onPressed: _toRegister,
               )
             ],
           ),

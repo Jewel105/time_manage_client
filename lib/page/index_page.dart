@@ -28,7 +28,6 @@ class _IndexPageState extends State<IndexPage> {
     super.initState();
     _pagecontroller = PageController(initialPage: _pageIndex.value);
     token = StorageUtil.get(Constant.TOKEN);
-    debugPrint(token);
   }
 
   @override

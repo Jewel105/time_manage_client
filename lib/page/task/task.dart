@@ -8,7 +8,6 @@ class Task extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint(DateTime.now().toString());
     return Scaffold(
       appBar: AppBar(
         title: Text(context.locale.task),

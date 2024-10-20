@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:time_manage_client/common/constant.dart';
@@ -38,7 +36,7 @@ class DioInterceptors extends Interceptor {
     ResponseInterceptorHandler handler,
   ) async {
     BaseEntity<Object?> data =
-        BaseEntity<Object?>.fromJson(jsonDecode(response.data.toString()));
+        BaseEntity<Object?>.fromJson(response.data as Map<String, dynamic>);
     if (!data.success) {
       if (data.code == '301') {
         NavCtrl.switchTab(Routes.home);

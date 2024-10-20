@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -129,7 +128,7 @@ class DioUtil {
       if (loading && cancel != null) {
         cancel();
       }
-      return BaseEntity<dynamic>.fromJson(jsonDecode(response.data.toString()))
+      return BaseEntity<dynamic>.fromJson(response.data as Map<String, dynamic>)
           .data;
     } on DioException catch (_) {
       if (loading && cancel != null) {
