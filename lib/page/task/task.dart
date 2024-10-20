@@ -37,6 +37,11 @@ class Task extends StatelessWidget {
               onPressed: () {
                 NavCtrl.push(Routes.register);
               }),
+          MainButton(
+              text: "forgot password",
+              onPressed: () {
+                NavCtrl.push(Routes.forgot);
+              }),
         ],
       ),
     );

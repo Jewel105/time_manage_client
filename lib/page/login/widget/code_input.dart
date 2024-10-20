@@ -54,7 +54,7 @@ class _CodeInputState extends State<CodeInput> {
           ),
         ),
       ),
-      validator: FormBuilderValidators.required(),
+      validator: FormBuilderValidators.equalLength(6),
     );
   }
 }

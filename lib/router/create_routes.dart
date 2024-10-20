@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:time_manage_client/page/common/page_404.dart';
 import 'package:time_manage_client/page/index_page.dart';
+import 'package:time_manage_client/page/login/forgot_page.dart';
 import 'package:time_manage_client/page/login/login_page.dart';
 import 'package:time_manage_client/page/login/register_page.dart';
 
@@ -11,6 +12,7 @@ class CreateRoutes {
     '/': (Object? arguments) => const IndexPage(),
     '/login': (Object? arguments) => const LoginPage(),
     '/register': (Object? arguments) => const RegisterPage(),
+    '/forgot': (Object? arguments) => const ForgotPage(),
   };
 
   static Route<dynamic>? generateRoute(RouteSettings settings) {

@@ -11,6 +11,7 @@
   "register": "注册",
   "nameOrEmail": "用户名或邮箱",
   "password": "密码",
+  "newPassword": "新密码",
   "confirm": "确认",
   "userName": "用户名",
   "email": "邮箱",
@@ -18,5 +19,6 @@
   "sendCode": "发送",
   "confirmPassword": "确认密码",
   "confirmPasswordTip": "密码不匹配",
-  "success": "成功"
+  "success": "成功",
+  "submit": "提交"
 }
