@@ -9,21 +9,24 @@ class CommonApi {
     return response;
   }
 
-  static Future<String> register(Map<String, dynamic> data) async {
-    final String response =
-        await _dio.post(url: '/common/user/register', data: data);
+  static Future<int> register(Map<String, dynamic> data) async {
+    final int response = await _dio.post(
+        url: '/common/user/register', data: data, loading: true);
     return response;
   }
 
-  static Future<String> forgotPassword(Map<String, dynamic> data) async {
-    final String response =
+  static Future<int> forgotPassword(Map<String, dynamic> data) async {
+    final int response =
         await _dio.post(url: '/common/user/forget/password', data: data);
     return response;
   }
 
-  static Future<String> sendCode(Map<String, dynamic> data) async {
-    final String response =
-        await _dio.post(url: '/common/user/send/code', data: data);
+  static Future<bool> sendCode(String email) async {
+    final bool response = await _dio.post(
+      url: '/common/user/send/code',
+      data: <String, String>{'email': email},
+      loading: true,
+    );
     return response;
   }
 }

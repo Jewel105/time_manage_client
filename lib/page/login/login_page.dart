@@ -22,7 +22,9 @@ class _LoginPageState extends State<LoginPage> {
 
   void _toForgotPassword() {}
 
-  void _toRegister() {}
+  void _toRegister() {
+    NavCtrl.push(Routes.register);
+  }
 
   void _submit() async {
     final bool valid = _formKey.currentState?.validate() ?? false;
@@ -52,11 +54,7 @@ class _LoginPageState extends State<LoginPage> {
                 name: 'name',
                 decoration:
                     InputDecoration(labelText: context.locale.nameOrEmail),
-                validator: FormBuilderValidators.compose(
-                  <FormFieldValidator<String>>[
-                    FormBuilderValidators.required(),
-                  ],
-                ),
+                validator: FormBuilderValidators.required(),
               ),
               SizedBox(height: 16.w),
               FormBuilderTextField(
@@ -66,7 +64,7 @@ class _LoginPageState extends State<LoginPage> {
                 validator: FormBuilderValidators.compose(
                   <FormFieldValidator<String>>[
                     FormBuilderValidators.required(),
-                    FormBuilderValidators.minLength(6),
+                    FormBuilderValidators.password()
                   ],
                 ),
               ),

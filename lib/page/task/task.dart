@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:time_manage_client/router/nav_ctrl.dart';
+import 'package:time_manage_client/router/routes.dart';
 import 'package:time_manage_client/utils/index.dart';
+import 'package:time_manage_client/widget/main_button.dart';
 
 class Task extends StatelessWidget {
   const Task({super.key});
@@ -29,6 +32,11 @@ class Task extends StatelessWidget {
             ),
           ),
           Container(),
+          MainButton(
+              text: "register",
+              onPressed: () {
+                NavCtrl.push(Routes.register);
+              }),
         ],
       ),
     );

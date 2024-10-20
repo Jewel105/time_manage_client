@@ -11,5 +11,13 @@
   "register": "Register",
   "nameOrEmail": "Username or email",
   "password": "Password",
-  "confirm": "Confirm"
+  "confirm": "Confirm",
+  "userName": "Username",
+  "email": "Email",
+  "emailCode": "Verification code",
+  "sendCode": "Send",
+  "confirmPassword": "Confirm password",
+  "confirmPasswordTip": "Password does not match",
+  "success": "success"
+
 }
