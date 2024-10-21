@@ -20,7 +20,9 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final GlobalKey<FormBuilderState> _formKey = GlobalKey<FormBuilderState>();
 
-  void _toForgotPassword() {}
+  void _toForgotPassword() {
+    NavCtrl.push(Routes.forgot);
+  }
 
   void _toRegister() {
     NavCtrl.push(Routes.register);
@@ -61,12 +63,7 @@ class _LoginPageState extends State<LoginPage> {
                 name: 'password',
                 decoration: InputDecoration(labelText: context.locale.password),
                 obscureText: true,
-                validator: FormBuilderValidators.compose(
-                  <FormFieldValidator<String>>[
-                    FormBuilderValidators.required(),
-                    FormBuilderValidators.password()
-                  ],
-                ),
+                validator: FormBuilderValidators.required(),
               ),
               SizedBox(height: 8.w),
               GestureDetector(

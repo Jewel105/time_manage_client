@@ -18,12 +18,17 @@ class DioInterceptors extends Interceptor {
     if (token != null) {
       options.headers['Token'] = token;
     }
+    // 添加Equipment头
+    int? equipment = StorageUtil.get(Constant.EQUIPMENTID) as int?;
+    if (equipment != null) {
+      options.headers['Equipment'] = equipment;
+    }
 
     // 添加翻译请求头
     Locale? locale = navigatorKey.currentContext != null
         ? Localizations.localeOf(navigatorKey.currentContext!)
         : null;
-    options.headers['language'] = locale?.toString() ?? 'en';
+    options.headers['Language'] = locale?.toString() ?? 'en';
 
     // 继续发送请求
     handler.next(options);

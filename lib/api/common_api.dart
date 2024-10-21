@@ -29,4 +29,10 @@ class CommonApi {
     );
     return response;
   }
+
+  static Future<int> registerDevice(Map<String, dynamic> data) async {
+    final int response =
+        await _dio.post(url: '/common/system/register/equipment', data: data);
+    return response;
+  }
 }
