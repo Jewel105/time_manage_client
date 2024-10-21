@@ -35,4 +35,17 @@ class CommonApi {
         await _dio.post(url: '/common/system/register/equipment', data: data);
     return response;
   }
+
+  static Future<int> reportException(
+      String error, String stack, String version) async {
+    final int response = await _dio.post(
+      url: '/common/system/log/error',
+      data: <String, String>{
+        'error': error,
+        'stack': stack,
+        'version': version,
+      },
+    );
+    return response;
+  }
 }

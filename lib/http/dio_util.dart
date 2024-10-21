@@ -131,10 +131,11 @@ class DioUtil {
       return BaseEntity<dynamic>.fromJson(response.data as Map<String, dynamic>)
           .data;
     } on DioException catch (_) {
-      if (loading && cancel != null) {
-        cancel();
-      }
       rethrow;
+    } finally {
+      if (loading && cancel != null) {
+        cancel(); // 无论成功还是抛异常，都执行
+      }
     }
   }
 
