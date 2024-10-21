@@ -10,7 +10,12 @@ class Category extends StatelessWidget {
       appBar: AppBar(
         title: Text(context.locale.category),
       ),
-      body: Container(),
+      body: ListView.builder(
+        itemCount: 10,
+        itemBuilder: (BuildContext context, int index) {
+          return ListTile();
+        },
+      ),
     );
   }
 }
