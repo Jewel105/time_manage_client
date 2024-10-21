@@ -20,5 +20,8 @@
   "confirmPassword": "Confirm password",
   "confirmPasswordTip": "Password does not match",
   "success": "Success",
-  "submit": "Submit"
+  "submit": "Submit",
+  "addCategory": "Add Category",
+  "editCategory": "Edit Category",
+  "categoryName": "Category name"
 }

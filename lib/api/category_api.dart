@@ -13,4 +13,16 @@ class CategoryApi {
         .map((dynamic data) => CategoryModel.fromJson(data))
         .toList();
   }
+
+  static Future<int> saveCategories({
+    int id = 0,
+    required String name,
+    int parentID = 0,
+  }) async {
+    final int response = await _dio.post(
+        url: '/categories/save',
+        data: <String, Object>{'id': id, 'name': name, 'parentID': parentID},
+        loading: true);
+    return response;
+  }
 }

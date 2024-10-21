@@ -20,5 +20,8 @@
   "confirmPassword": "确认密码",
   "confirmPasswordTip": "密码不匹配",
   "success": "成功",
-  "submit": "提交"
+  "submit": "提交",
+  "addCategory": "添加分类",
+  "editCategory": "修改分类",
+  "categoryName": "分类名称"
 }
