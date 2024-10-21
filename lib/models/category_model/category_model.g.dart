@@ -1,12 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'category.dart';
+part of 'category_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-Category _$CategoryFromJson(Map<String, dynamic> json) => Category(
+CategoryModel _$CategoryModelFromJson(Map<String, dynamic> json) =>
+    CategoryModel(
       id: (json['id'] as num?)?.toInt() ?? 0,
       level: (json['level'] as num?)?.toInt() ?? 0,
       name: json['name'] as String? ?? '',
@@ -15,7 +16,8 @@ Category _$CategoryFromJson(Map<String, dynamic> json) => Category(
       userID: (json['userID'] as num?)?.toInt() ?? 0,
     );
 
-Map<String, dynamic> _$CategoryToJson(Category instance) => <String, dynamic>{
+Map<String, dynamic> _$CategoryModelToJson(CategoryModel instance) =>
+    <String, dynamic>{
       'id': instance.id,
       'level': instance.level,
       'name': instance.name,

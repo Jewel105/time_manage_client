@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:time_manage_client/page/category/category.dart';
 import 'package:time_manage_client/page/common/page_404.dart';
 import 'package:time_manage_client/page/index_page.dart';
 import 'package:time_manage_client/page/login/forgot_page.dart';
@@ -13,6 +14,7 @@ class CreateRoutes {
     '/login': (Object? arguments) => const LoginPage(),
     '/register': (Object? arguments) => const RegisterPage(),
     '/forgot': (Object? arguments) => const ForgotPage(),
+    '/category': (Object? arguments) => Category(parentID: arguments as int),
   };
 
   static Route<dynamic>? generateRoute(RouteSettings settings) {
