@@ -52,31 +52,16 @@ class DioUtil {
 
     // release模式
     if (kReleaseMode) {
-      if (Env.appEnv != EnvType.development) {
-        // 配置http2证书
-        _dio.httpClientAdapter = Http2Adapter(
-          ConnectionManager(
-              idleTimeout: _receiveTime,
-              onClientCreate: (_, ClientSetting config) {
-                config.onBadCertificate = (X509Certificate cert) => true;
-                // 配置代理
-                // config.proxy =
-                //     Uri.parse('https://login:password@192.168.1.154:8888');
-              }),
-        );
-      } else {
-        // 开发环境 http证书
-        dio.httpClientAdapter = IOHttpClientAdapter(
-          createHttpClient: () {
-            final HttpClient client = HttpClient();
-            client.badCertificateCallback =
-                (X509Certificate cert, String host, int port) => true;
-            return client;
-          },
-        );
-      }
+      // 配置http2证书
+      _dio.httpClientAdapter = Http2Adapter(
+        ConnectionManager(
+            idleTimeout: _receiveTime,
+            onClientCreate: (_, ClientSetting config) {
+              config.onBadCertificate = (X509Certificate cert) => true;
+            }),
+      );
     } else {
-      // 调试生产环境，http并配置本地vpn代理, http2无法抓到包
+      // 调试,http2无法抓到包
       dio.httpClientAdapter = IOHttpClientAdapter(
         createHttpClient: () {
           final HttpClient client = HttpClient();
