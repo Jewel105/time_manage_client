@@ -14,21 +14,42 @@ class Task extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(context.locale.task),
+        actions: <Widget>[
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.add_circle_outline),
+            iconSize: 24.w,
+          ),
+          SizedBox(width: 10.w),
+        ],
       ),
       body: Column(
         children: <Widget>[
-          Padding(
-            padding: EdgeInsets.all(16.w),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text('${StringUtil.dateTimeFormat(
-                  context,
-                  time: DateTime.now().millisecondsSinceEpoch,
-                  format: DateFormat.yMMMEd,
-                )}⬇️'),
-                Text('+${context.locale.addTask}'),
-              ],
+          GestureDetector(
+            onTap: () {
+              showDatePicker(
+                context: context,
+                initialDate: DateTime.now(),
+                firstDate: DateTime(2000),
+                lastDate: DateTime(2101),
+              );
+              // showTimePicker(
+              //   context: context,
+              //   initialTime: TimeOfDay.now(),
+              // );
+            },
+            child: Padding(
+              padding: EdgeInsets.all(16.w),
+              child: Row(
+                children: <Widget>[
+                  Text(StringUtil.dateTimeFormat(
+                    context,
+                    time: DateTime.now().millisecondsSinceEpoch,
+                    format: DateFormat.yMMMEd,
+                  )),
+                  const Icon(Icons.keyboard_arrow_down)
+                ],
+              ),
             ),
           ),
           Container(),
