@@ -23,5 +23,7 @@
   "submit": "提交",
   "addCategory": "添加分类",
   "editCategory": "修改分类",
-  "categoryName": "分类名称"
+  "categoryName": "分类名称",
+  "totalTip": "共计 {count} 条数据.",
+  "noData": "没有数据"
 }

@@ -26,13 +26,17 @@ class Task extends StatelessWidget {
       body: Column(
         children: <Widget>[
           GestureDetector(
-            onTap: () {
-              showDatePicker(
+            onTap: () async {
+              DateTime? time = await showDatePicker(
                 context: context,
                 initialDate: DateTime.now(),
-                firstDate: DateTime(2000),
-                lastDate: DateTime(2101),
+                firstDate: DateTime.now().subtract(const Duration(days: 1095)),
+                lastDate: DateTime.now(),
               );
+              print(time);
+              if (time == null) return;
+              print(time.millisecondsSinceEpoch);
+
               // showTimePicker(
               //   context: context,
               //   initialTime: TimeOfDay.now(),

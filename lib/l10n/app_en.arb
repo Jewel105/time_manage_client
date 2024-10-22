@@ -23,5 +23,14 @@
   "submit": "Submit",
   "addCategory": "Add Category",
   "editCategory": "Edit Category",
-  "categoryName": "Category name"
+  "categoryName": "Category name",
+  "totalTip": "No more, a total of {count} records.",
+  "@totalTip": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "noData": "No Data"
 }
