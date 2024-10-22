@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:time_manage_client/common/constant.dart';
+import 'package:time_manage_client/models/category_model/category_model.dart';
 import 'package:time_manage_client/page/category/category.dart';
 import 'package:time_manage_client/page/mine/mine.dart';
 import 'package:time_manage_client/page/statistics/statistics.dart';
@@ -37,11 +38,11 @@ class _IndexPageState extends State<IndexPage> {
         physics: const NeverScrollableScrollPhysics(),
         controller: _pagecontroller,
         children: !token.isEmptyOrNull
-            ? const <Widget>[
-                Task(),
-                Category(),
-                Statistics(),
-                Mine(),
+            ? <Widget>[
+                const Task(),
+                Category(parent: CategoryModel()),
+                const Statistics(),
+                const Mine(),
               ]
             : _buildNoLogin(context),
       ),

@@ -4,13 +4,14 @@ part 'category_model.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class CategoryModel {
-  CategoryModel(
-      {required this.id,
-      required this.level,
-      required this.name,
-      required this.parentID,
-      required this.path,
-      required this.userID});
+  CategoryModel({
+    this.id = 0,
+    this.level = 0,
+    this.name = '',
+    this.parentID = 0,
+    this.path = '',
+    this.userID = 0,
+  });
 
   @JsonKey(name: 'id', defaultValue: 0)
   int id;
