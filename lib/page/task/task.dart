@@ -14,29 +14,37 @@ class Task extends StatefulWidget {
 }
 
 class _TaskState extends State<Task> {
-  int selectTime = DateTime.now().millisecondsSinceEpoch;
-
-  final PageApiCall<TaskModel> pageApiCall = PageApiCall<TaskModel>(
-    apiCall: TaskApi.getCategories,
-    params: <String, dynamic>{
-      'startTime': 1728610830,
-      'endTime': 1728610833,
-    },
-  );
+  int selectTime = 0;
+  late final PageApiCall<TaskModel> pageApiCall;
+  @override
+  void initState() {
+    super.initState();
+    DateTime now = DateTime.now();
+    selectTime = DateTime(now.year, now.month, now.day).millisecondsSinceEpoch;
+    pageApiCall = PageApiCall<TaskModel>(
+      apiCall: TaskApi.getCategories,
+      params: <String, dynamic>{
+        'startTime': selectTime,
+        'endTime': now.millisecondsSinceEpoch,
+      },
+    );
+  }
 
   void _changeDate() async {
+    DateTime now = DateTime.now();
     DateTime? time = await showDatePicker(
       context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime.now().subtract(const Duration(days: 1095)),
-      lastDate: DateTime.now(),
+      initialDate: now,
+      firstDate: now.subtract(const Duration(days: 1095)),
+      lastDate: now,
     );
     if (time == null) return;
     selectTime = time.millisecondsSinceEpoch;
+    int endTime = time.add(const Duration(days: 1)).millisecondsSinceEpoch;
     pageApiCall.refresh();
-    pageApiCall.params = {
-      'startTime': 1728610833,
-      'endTime': 1728610833,
+    pageApiCall.params = <String, dynamic>{
+      'startTime': selectTime,
+      'endTime': endTime,
     };
     setState(() {});
     await pageApiCall.loadMore();
