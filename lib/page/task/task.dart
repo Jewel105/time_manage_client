@@ -14,45 +14,39 @@ class Task extends StatefulWidget {
 }
 
 class _TaskState extends State<Task> {
-  int selectTime = 0;
+  DateTime selectTime = DateTime.now();
+  DateTime today = DateTime.now();
+
   late final PageApiCall<TaskModel> pageApiCall;
   @override
   void initState() {
     super.initState();
-    DateTime now = DateTime.now();
-    selectTime = DateTime(now.year, now.month, now.day).millisecondsSinceEpoch;
+    selectTime = DateTime(today.year, today.month, today.day);
     pageApiCall = PageApiCall<TaskModel>(
       apiCall: TaskApi.getCategories,
       params: <String, dynamic>{
-        'startTime': selectTime,
-        'endTime': now.millisecondsSinceEpoch,
+        'startTime': selectTime.millisecondsSinceEpoch,
+        'endTime': today.millisecondsSinceEpoch,
       },
     );
   }
 
   void _changeDate() async {
-    DateTime now = DateTime.now();
     DateTime? time = await showDatePicker(
       context: context,
-      initialDate: now,
-      firstDate: now.subtract(const Duration(days: 1095)),
-      lastDate: now,
+      initialDate: selectTime,
+      firstDate: today.subtract(const Duration(days: 1095)),
+      lastDate: today,
     );
     if (time == null) return;
-    selectTime = time.millisecondsSinceEpoch;
+    selectTime = time;
     int endTime = time.add(const Duration(days: 1)).millisecondsSinceEpoch;
     pageApiCall.refresh();
     pageApiCall.params = <String, dynamic>{
-      'startTime': selectTime,
+      'startTime': selectTime.millisecondsSinceEpoch,
       'endTime': endTime,
     };
     setState(() {});
-    await pageApiCall.loadMore();
-    setState(() {});
-    // showTimePicker(
-    //   context: context,
-    //   initialTime: TimeOfDay.now(),
-    // );
   }
 
   @override
@@ -90,12 +84,12 @@ class _TaskState extends State<Task> {
     return GestureDetector(
       onTap: _changeDate,
       child: Padding(
-        padding: EdgeInsets.all(16.w),
+        padding: EdgeInsets.symmetric(horizontal: 16.w),
         child: Row(
           children: <Widget>[
             Text(StringUtil.dateTimeFormat(
               context,
-              time: selectTime,
+              time: selectTime.millisecondsSinceEpoch,
               format: DateFormat.yMMMEd,
             )),
             const Icon(Icons.keyboard_arrow_down)
