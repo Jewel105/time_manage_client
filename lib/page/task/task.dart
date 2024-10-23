@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:time_manage_client/api/task_api.dart';
+import 'package:time_manage_client/common/app_style.dart';
 import 'package:time_manage_client/models/task_model/task_model.dart';
+import 'package:time_manage_client/router/nav_ctrl.dart';
+import 'package:time_manage_client/router/routes.dart';
 import 'package:time_manage_client/utils/index.dart';
 import 'package:time_manage_client/widget/list_view_wrapper.dart';
 
@@ -49,6 +52,11 @@ class _TaskState extends State<Task> {
     setState(() {});
   }
 
+  void _saveTask({required TaskModel task}) async {
+    bool? res = await NavCtrl.push(Routes.saveTask, arguments: task);
+    // if (res == true) setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,7 +64,9 @@ class _TaskState extends State<Task> {
         title: Text(context.locale.task),
         actions: <Widget>[
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              _saveTask(task: TaskModel.emptyInstance());
+            },
             icon: const Icon(Icons.add_circle_outline),
             iconSize: 24.w,
           ),
@@ -87,11 +97,14 @@ class _TaskState extends State<Task> {
         padding: EdgeInsets.symmetric(horizontal: 16.w),
         child: Row(
           children: <Widget>[
-            Text(StringUtil.dateTimeFormat(
-              context,
-              time: selectTime.millisecondsSinceEpoch,
-              format: DateFormat.yMMMEd,
-            )),
+            Text(
+              StringUtil.dateTimeFormat(
+                context,
+                time: selectTime.millisecondsSinceEpoch,
+                format: DateFormat.yMMMEd,
+              ),
+              style: AppStyle.h3,
+            ),
             const Icon(Icons.keyboard_arrow_down)
           ],
         ),

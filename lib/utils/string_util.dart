@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
+import 'package:time_manage_client/utils/extension_util.dart';
 
 typedef FormatFn<T> = DateFormat Function([dynamic locale]);
 
@@ -17,26 +17,19 @@ class StringUtil {
     }
     DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(time);
     if (format == null) {
-      return DateFormat.yMd(AppLocalizations.of(context).localeName)
+      return DateFormat.yMd(context.locale.localeName)
           .add_Hms()
           .format(dateTime);
     } else {
       switch (timeFormat) {
         case 'Hms':
-          return format(AppLocalizations.of(context).localeName)
-              .add_Hms()
-              .format(dateTime);
+          return format(context.locale.localeName).add_Hms().format(dateTime);
         case 'Hm':
-          return format(AppLocalizations.of(context).localeName)
-              .add_Hm()
-              .format(dateTime);
+          return format(context.locale.localeName).add_Hm().format(dateTime);
         case 'H':
-          return format(AppLocalizations.of(context).localeName)
-              .add_H()
-              .format(dateTime);
+          return format(context.locale.localeName).add_H().format(dateTime);
         default:
-          return format(AppLocalizations.of(context).localeName)
-              .format(dateTime);
+          return format(context.locale.localeName).format(dateTime);
       }
     }
   }

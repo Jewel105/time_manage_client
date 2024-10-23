@@ -25,5 +25,11 @@
   "editCategory": "修改分类",
   "categoryName": "分类名称",
   "totalTip": "共计 {count} 条数据.",
-  "noData": "没有数据"
+  "noData": "没有数据",
+  "selectCategory": "选择分类",
+  "remark": "备注",
+  "editTask": "修改任务",
+  "startTime": "开始时间",
+  "endTime": "结束时间",
+  "startTimeTip":"最后一个任务的结束时间"
 }

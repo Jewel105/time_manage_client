@@ -1,33 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:time_manage_client/common/app_color.dart';
+import 'package:time_manage_client/common/app_style.dart';
 
 final ThemeData appTheme = ThemeData(
   primaryColor: AppColor.appMainColor,
   highlightColor: Colors.transparent,
+  colorScheme: const ColorScheme(
+    brightness: Brightness.light,
+    primary: AppColor.appMainColor,
+    onPrimary: AppColor.textBlackColor,
+    secondary: AppColor.appMainColor,
+    onSecondary: AppColor.textBlackColor,
+    error: AppColor.bgError,
+    onError: AppColor.textErrorColor,
+    surface: AppColor.bgGreyColor,
+    onSurface: AppColor.textGreyColor,
+  ),
+  textTheme: TextTheme(bodyMedium: AppStyle.body),
   appBarTheme: AppBarTheme(
     backgroundColor: AppColor.bgWhiteColor,
     surfaceTintColor: AppColor.bgWhiteColor,
     centerTitle: true,
-    titleTextStyle: TextStyle(
-      fontSize: 18.sp,
-      fontWeight: FontWeight.w600,
-      color: AppColor.textDarkGreyColor,
-    ),
+    titleTextStyle: AppStyle.h1,
   ),
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
     unselectedItemColor: AppColor.textLightGreyColor,
     selectedItemColor: AppColor.appMainColor,
-    selectedLabelStyle: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500),
-    unselectedLabelStyle:
-        TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500),
+    selectedLabelStyle: AppStyle.h3,
+    unselectedLabelStyle: AppStyle.h3,
     type: BottomNavigationBarType.fixed,
     elevation: 10,
-  ),
-  colorScheme: ColorScheme.fromSeed(
-    primary: AppColor.appMainColor,
-    seedColor: AppColor.appMainColor,
-    surface: AppColor.bgWhiteColor,
   ),
   scaffoldBackgroundColor: AppColor.bgWhiteColor,
   useMaterial3: true,

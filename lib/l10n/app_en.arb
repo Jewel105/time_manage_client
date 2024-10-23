@@ -32,5 +32,11 @@
       }
     }
   },
-  "noData": "No Data"
+  "noData": "No Data",
+  "selectCategory": "Select Category",
+  "remark": "Remarks",
+  "editTask": "Edit Task",
+  "startTime": "Start time",
+  "endTime": "End time",
+  "startTimeTip":"End time of the last task"
 }

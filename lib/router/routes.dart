@@ -4,4 +4,5 @@ class Routes {
   static const String register = '/register';
   static const String forgot = '/forgot';
   static const String category = '/category';
+  static const String saveTask = '/saveTask';
 }
