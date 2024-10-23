@@ -47,7 +47,7 @@ class Env {
   // 测试环境，http证书
   static final EnvConfig _devConfig = EnvConfig(
     envName: 'development',
-    envHttpUrl: 'https://127.0.0.1:8081/api/v1',
+    envHttpUrl: 'http://127.0.0.1:8081/api/v1',
     envWebsocketUrl: 'ws://192.168.1.200:10076/api/v1/market/ws',
     envTcpIp: '192.168.1.200',
     envTcpPort: 10079,

@@ -43,18 +43,24 @@ class _TaskState extends State<Task> {
     );
     if (time == null) return;
     selectTime = time;
-    int endTime = time.add(const Duration(days: 1)).millisecondsSinceEpoch;
     pageApiCall.refresh();
     pageApiCall.params = <String, dynamic>{
       'startTime': selectTime.millisecondsSinceEpoch,
-      'endTime': endTime,
+      'endTime': DateTime.now().millisecondsSinceEpoch,
     };
     setState(() {});
   }
 
   void _saveTask({required TaskModel task}) async {
     bool? res = await NavCtrl.push(Routes.saveTask, arguments: task);
-    // if (res == true) setState(() {});
+    if (res == true) {
+      pageApiCall.refresh();
+      pageApiCall.params = <String, dynamic>{
+        'startTime': selectTime.millisecondsSinceEpoch,
+        'endTime': DateTime.now().millisecondsSinceEpoch,
+      };
+      setState(() {});
+    }
   }
 
   @override

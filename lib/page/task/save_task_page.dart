@@ -9,6 +9,7 @@ import 'package:time_manage_client/api/task_api.dart';
 import 'package:time_manage_client/common/app_style.dart';
 import 'package:time_manage_client/models/category_model/category_model.dart';
 import 'package:time_manage_client/models/task_model/task_model.dart';
+import 'package:time_manage_client/router/nav_ctrl.dart';
 import 'package:time_manage_client/utils/extension_util.dart';
 import 'package:time_manage_client/utils/string_util.dart';
 import 'package:time_manage_client/widget/main_button.dart';
@@ -26,39 +27,40 @@ class SaveTaskPage extends StatefulWidget {
 }
 
 class _SaveTaskPageState extends State<SaveTaskPage> {
-  DateTime selectTime = DateTime.now();
+  late TaskModel task;
   DateTime today = DateTime.now();
-  int selectedCategoryID = 0;
   final TextEditingController remarkController = TextEditingController();
   final TreeNode<CategoryModel> sampleTree = TreeNode<CategoryModel>.root();
 
   @override
   void initState() {
     super.initState();
+    initData();
     getCategories(sampleTree);
   }
 
-  _changeDate() async {
-    Locale currentLocale = Localizations.localeOf(context);
-    DateTime? res = await DatePicker.showDateTimePicker(
-      context,
-      showTitleActions: true,
-      currentTime: selectTime,
-      minTime: today.subtract(const Duration(days: 365)),
-      maxTime: today,
-      locale:
-          currentLocale.languageCode == 'zh' ? LocaleType.zh : LocaleType.en,
-    );
-    if (res != null) selectTime = res;
+  initData() async {
+    task = widget.task;
+    if (task.id != 0) return;
+    task.endTime = DateTime.now().millisecondsSinceEpoch;
+    if (task.startTime == 0) {
+      task.startTime = await TaskApi.getLastTime();
+      if (task.startTime == 0) {
+        task.startTime = DateTime.now().millisecondsSinceEpoch;
+      }
+      print(task.startTime); //1729689618185
+      print(task.endTime); //1729693219932
+      setState(() {});
+    }
   }
 
   getCategories(TreeNode<CategoryModel> node) async {
     if (node.childrenAsList.isNotEmpty) return;
-    if (selectedCategoryID == node.data?.id) return;
+    if (task.categoryID == node.data?.id) return;
     List<CategoryModel> res =
         await CategoryApi.getCategories(parentID: node.data?.id ?? 0);
     if (res.isEmpty) {
-      selectedCategoryID = node.data?.id ?? 0;
+      task.categoryID = node.data?.id ?? 0;
       setState(() {});
       return;
     }
@@ -69,12 +71,9 @@ class _SaveTaskPageState extends State<SaveTaskPage> {
     node.addAll(treeDate);
   }
 
-  _saveTask() {
-    TaskModel task = widget.task;
-    task.categoryID = selectedCategoryID;
-    task.description = remarkController.text;
-    task.endTime = selectTime.millisecondsSinceEpoch;
-    TaskApi.saveTask(task);
+  _saveTask() async {
+    await TaskApi.saveTask(task);
+    NavCtrl.back(arguments: true);
   }
 
   @override
@@ -92,20 +91,15 @@ class _SaveTaskPageState extends State<SaveTaskPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
-              context.locale.startTime,
+              '${context.locale.startTime}(${context.locale.startTimeTip})',
               style: AppStyle.h3,
             ),
             SizedBox(height: 4.h),
-            Text(
-              widget.task.startTime != 0
-                  ? StringUtil.dateTimeFormat(
-                      context,
-                      time: selectTime.millisecondsSinceEpoch,
-                      format: DateFormat.yMMMEd,
-                      timeFormat: 'Hm',
-                    )
-                  : context.locale.startTimeTip,
-              style: AppStyle.tip,
+            TimePicker(
+              currentTime: DateTime.fromMillisecondsSinceEpoch(task.startTime),
+              onChangeTime: (DateTime time) {
+                task.startTime = time.millisecondsSinceEpoch;
+              },
             ),
             SizedBox(height: 8.h),
             Text(
@@ -113,7 +107,12 @@ class _SaveTaskPageState extends State<SaveTaskPage> {
               style: AppStyle.h3,
             ),
             SizedBox(height: 4.h),
-            _buildDate(),
+            TimePicker(
+              currentTime: DateTime.fromMillisecondsSinceEpoch(task.endTime),
+              onChangeTime: (DateTime time) {
+                task.endTime = time.millisecondsSinceEpoch;
+              },
+            ),
             SizedBox(height: 16.h),
             FormBuilderTextField(
               name: 'remark',
@@ -128,11 +127,9 @@ class _SaveTaskPageState extends State<SaveTaskPage> {
                 tree: sampleTree,
                 showRootNode: false,
                 builder: (BuildContext context, TreeNode<CategoryModel> node) {
-                  print("object");
                   return Container(
-                    color: node.data?.id == selectedCategoryID
-                        ? Colors.amber
-                        : null,
+                    color:
+                        node.data?.id == task.categoryID ? Colors.amber : null,
                     child: ListTile(
                       title: Text('${node.data?.name}'),
                     ),
@@ -149,13 +146,64 @@ class _SaveTaskPageState extends State<SaveTaskPage> {
         child: MainButton(
           width: double.infinity,
           text: context.locale.submit,
-          onPressed: selectedCategoryID != 0 ? _saveTask : null,
+          onPressed: task.categoryID != 0 ? _saveTask : null,
         ),
       ),
     );
   }
+}
 
-  GestureDetector _buildDate() {
+class TimePicker extends StatefulWidget {
+  const TimePicker({
+    super.key,
+    required this.currentTime,
+    this.onChangeTime,
+  });
+
+  final DateTime currentTime;
+  final void Function(DateTime)? onChangeTime;
+
+  @override
+  State<TimePicker> createState() => _TimePickerState();
+}
+
+class _TimePickerState extends State<TimePicker> {
+  late DateTime currentTime;
+  @override
+  void initState() {
+    super.initState();
+    currentTime = widget.currentTime;
+  }
+
+  @override
+  void didUpdateWidget(TimePicker oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.currentTime != currentTime) {
+      currentTime = widget.currentTime;
+    }
+  }
+
+  _changeDate() async {
+    DateTime today = DateTime.now();
+    Locale currentLocale = Localizations.localeOf(context);
+    DateTime? res = await DatePicker.showDateTimePicker(
+      context,
+      showTitleActions: true,
+      currentTime: currentTime,
+      minTime: today.subtract(const Duration(days: 365)),
+      maxTime: today,
+      locale:
+          currentLocale.languageCode == 'zh' ? LocaleType.zh : LocaleType.en,
+    );
+    if (res != null) {
+      currentTime = res;
+      setState(() {});
+      widget.onChangeTime?.call(res);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return GestureDetector(
       onTap: _changeDate,
       child: Row(
@@ -163,7 +211,7 @@ class _SaveTaskPageState extends State<SaveTaskPage> {
           Text(
             StringUtil.dateTimeFormat(
               context,
-              time: selectTime.millisecondsSinceEpoch,
+              time: currentTime.millisecondsSinceEpoch,
               format: DateFormat.yMMMEd,
               timeFormat: 'Hm',
             ),

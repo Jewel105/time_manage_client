@@ -23,7 +23,7 @@ class ListViewWrapper<T> extends StatefulWidget {
     super.key,
     required this.pageApiCall,
     required this.itemBuilder,
-    this.shrinkWrap = true,
+    this.shrinkWrap = false,
     this.controller,
     this.itemExtent,
     this.skeleton,
@@ -64,8 +64,6 @@ class _ListViewWrapperState<T> extends State<ListViewWrapper<T>> {
     return RefreshIndicator(
       onRefresh: () async {
         widget.pageApiCall.refresh();
-        setState(() {});
-        await widget.pageApiCall.loadMore();
         setState(() {});
       },
       child: Scrollbar(
@@ -155,7 +153,7 @@ class _ListViewWrapperState<T> extends State<ListViewWrapper<T>> {
 class PageApiCall<T> {
   bool hasMore = true;
   int page = 1;
-  final int size = 10;
+  final int size = 20;
   List<T> items = <T>[];
   final Future<List<T>> Function(Map<String, dynamic>) apiCall;
   Map<String, dynamic> params = <String, dynamic>{};

@@ -44,6 +44,7 @@ class DioInterceptors extends Interceptor {
         BaseEntity<Object?>.fromJson(response.data as Map<String, dynamic>);
     if (!data.success) {
       if (data.code == '301') {
+        await StorageUtil.remove(Constant.TOKEN);
         NavCtrl.switchTab(Routes.home);
       }
       DialogUtil.openDialog(

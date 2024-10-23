@@ -18,4 +18,9 @@ class TaskApi {
         await _dio.post(url: '/tasks/save', data: task.toJson(), loading: true);
     return response;
   }
+
+  static Future<int> getLastTime() async {
+    final int response = await _dio.get(url: '/tasks/last/time');
+    return response;
+  }
 }
