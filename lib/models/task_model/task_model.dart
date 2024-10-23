@@ -10,7 +10,8 @@ class TaskModel {
       required this.endTime,
       required this.id,
       required this.spentTime,
-      required this.startTime});
+      required this.startTime,
+      required this.categoryID});
 
   @JsonKey(name: 'categories', defaultValue: '')
   String categories;
@@ -30,6 +31,9 @@ class TaskModel {
   @JsonKey(name: 'startTime', defaultValue: 0)
   int startTime;
 
+  @JsonKey(name: 'categoryID', defaultValue: 0)
+  int categoryID;
+
   factory TaskModel.fromJson(Map<String, dynamic> json) =>
       _$TaskModelFromJson(json);
 
@@ -41,5 +45,6 @@ class TaskModel {
       endTime: 0,
       id: 0,
       spentTime: 0,
-      startTime: 0);
+      startTime: 0,
+      categoryID: 0);
 }

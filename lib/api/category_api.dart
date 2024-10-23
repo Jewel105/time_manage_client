@@ -14,7 +14,7 @@ class CategoryApi {
         .toList();
   }
 
-  static Future<int> saveCategories({
+  static Future<int> saveCategory({
     int id = 0,
     required String name,
     int parentID = 0,

@@ -5,6 +5,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:time_manage_client/api/category_api.dart';
+import 'package:time_manage_client/api/task_api.dart';
 import 'package:time_manage_client/common/app_style.dart';
 import 'package:time_manage_client/models/category_model/category_model.dart';
 import 'package:time_manage_client/models/task_model/task_model.dart';
@@ -28,6 +29,7 @@ class _SaveTaskPageState extends State<SaveTaskPage> {
   DateTime selectTime = DateTime.now();
   DateTime today = DateTime.now();
   int selectedCategoryID = 0;
+  final TextEditingController remarkController = TextEditingController();
   final TreeNode<CategoryModel> sampleTree = TreeNode<CategoryModel>.root();
 
   @override
@@ -36,20 +38,23 @@ class _SaveTaskPageState extends State<SaveTaskPage> {
     getCategories(sampleTree);
   }
 
-  _changeDate() {
+  _changeDate() async {
     Locale currentLocale = Localizations.localeOf(context);
-    DatePicker.showDateTimePicker(
+    DateTime? res = await DatePicker.showDateTimePicker(
       context,
       showTitleActions: true,
+      currentTime: selectTime,
       minTime: today.subtract(const Duration(days: 365)),
       maxTime: today,
       locale:
           currentLocale.languageCode == 'zh' ? LocaleType.zh : LocaleType.en,
     );
+    if (res != null) selectTime = res;
   }
 
   getCategories(TreeNode<CategoryModel> node) async {
     if (node.childrenAsList.isNotEmpty) return;
+    if (selectedCategoryID == node.data?.id) return;
     List<CategoryModel> res =
         await CategoryApi.getCategories(parentID: node.data?.id ?? 0);
     if (res.isEmpty) {
@@ -64,7 +69,13 @@ class _SaveTaskPageState extends State<SaveTaskPage> {
     node.addAll(treeDate);
   }
 
-  _saveTask() {}
+  _saveTask() {
+    TaskModel task = widget.task;
+    task.categoryID = selectedCategoryID;
+    task.description = remarkController.text;
+    task.endTime = selectTime.millisecondsSinceEpoch;
+    TaskApi.saveTask(task);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -106,6 +117,7 @@ class _SaveTaskPageState extends State<SaveTaskPage> {
             SizedBox(height: 16.h),
             FormBuilderTextField(
               name: 'remark',
+              controller: remarkController,
               decoration: InputDecoration(labelText: context.locale.remark),
               obscureText: true,
             ),

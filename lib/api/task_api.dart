@@ -12,4 +12,10 @@ class TaskApi {
     );
     return response.map((dynamic data) => TaskModel.fromJson(data)).toList();
   }
+
+  static Future<int> saveTask(TaskModel task) async {
+    final int response =
+        await _dio.post(url: '/tasks/save', data: task.toJson(), loading: true);
+    return response;
+  }
 }

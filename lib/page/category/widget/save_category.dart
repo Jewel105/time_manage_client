@@ -21,7 +21,7 @@ class _SaveCategoryState extends State<SaveCategory> {
   void _submit(String? value) async {
     final bool valid = _formKey.currentState?.validate() ?? false;
     if (!valid) return;
-    await CategoryApi.saveCategories(
+    await CategoryApi.saveCategory(
       id: widget.category.id,
       name: value ?? '',
       parentID: widget.category.parentID,
