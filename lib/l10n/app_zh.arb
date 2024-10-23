@@ -31,5 +31,5 @@
   "editTask": "修改任务",
   "startTime": "开始时间",
   "endTime": "结束时间",
-  "startTimeTip":"最后一个任务的结束时间"
+  "startTimeTip": "默认最后一个任务的结束时间"
 }
