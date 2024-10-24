@@ -64,6 +64,12 @@ class _TaskState extends State<Task> {
     }
   }
 
+  void _deleteTask(int id) async {
+    await TaskApi.deleteTask(id);
+    pageApiCall.refresh();
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -130,7 +136,9 @@ class _TaskState extends State<Task> {
                         Icons.delete_outline,
                         color: AppColor.textErrorColor,
                       ),
-                      onPressed: () async {},
+                      onPressed: () {
+                        _deleteTask(item.id);
+                      },
                     ),
                   ],
                 ),

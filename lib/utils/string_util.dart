@@ -43,8 +43,6 @@ class StringUtil {
     if (hours != 0) res += '$hours ${context.locale.hours}';
     int minutes = (duration.inMinutes % 60);
     if (minutes != 0) res += '$minutes ${context.locale.minute}';
-    int seconds = (duration.inSeconds % 60);
-    if (seconds != 0) res += '$seconds ${context.locale.seconds}';
     return res;
   }
 }

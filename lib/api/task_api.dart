@@ -23,4 +23,10 @@ class TaskApi {
     final int response = await _dio.get(url: '/tasks/last/time');
     return response;
   }
+
+  static Future<bool> deleteTask(int id) async {
+    final bool response =
+        await _dio.post(url: '/tasks/delete/$id', loading: true);
+    return response;
+  }
 }
