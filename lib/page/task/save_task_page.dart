@@ -11,6 +11,7 @@ import 'package:time_manage_client/page/task/widget/time_picker.dart';
 import 'package:time_manage_client/router/nav_ctrl.dart';
 import 'package:time_manage_client/utils/extension_util.dart';
 import 'package:time_manage_client/widget/main_button.dart';
+import 'package:time_manage_client/widget/tips_widget.dart';
 
 class SaveTaskPage extends StatefulWidget {
   const SaveTaskPage({
@@ -34,11 +35,14 @@ class _SaveTaskPageState extends State<SaveTaskPage> {
   void initState() {
     super.initState();
     initData();
-    getCategories(sampleTree);
+    getCategories(sampleTree).then((_) {
+      setState(() {});
+    });
   }
 
   initData() async {
     task = widget.task;
+    remarkController.text = task.description;
     if (task.id != 0) return;
     task.endTime = DateTime.now().millisecondsSinceEpoch;
     if (task.startTime == 0) {
@@ -46,13 +50,11 @@ class _SaveTaskPageState extends State<SaveTaskPage> {
       if (task.startTime == 0) {
         task.startTime = DateTime.now().millisecondsSinceEpoch;
       }
-      print(task.startTime); //1729689618185
-      print(task.endTime); //1729693219932
       setState(() {});
     }
   }
 
-  getCategories(TreeNode<CategoryModel> node) async {
+  Future<void> getCategories(TreeNode<CategoryModel> node) async {
     if (node.childrenAsList.isNotEmpty) return;
     if (task.categoryID == node.data?.id) return;
     List<CategoryModel> res =
@@ -70,6 +72,7 @@ class _SaveTaskPageState extends State<SaveTaskPage> {
   }
 
   _saveTask() async {
+    task.description = remarkController.text;
     await TaskApi.saveTask(task);
     NavCtrl.back(arguments: true);
   }
@@ -116,26 +119,34 @@ class _SaveTaskPageState extends State<SaveTaskPage> {
               name: 'remark',
               controller: remarkController,
               decoration: InputDecoration(labelText: context.locale.remark),
-              obscureText: true,
             ),
             SizedBox(height: 16.h),
             Text(context.locale.selectCategory, style: AppStyle.h3),
-            Expanded(
-              child: TreeView.simple(
-                tree: sampleTree,
-                showRootNode: false,
-                builder: (BuildContext context, TreeNode<CategoryModel> node) {
-                  return Container(
-                    color:
-                        node.data?.id == task.categoryID ? Colors.amber : null,
-                    child: ListTile(
-                      title: Text('${node.data?.name}'),
+            sampleTree.length == 0
+                ? TipsWidget(
+                    icon: const Icon(Icons.no_backpack_outlined),
+                    tip: context.locale.noData,
+                  )
+                : Expanded(
+                    child: TreeView.simple(
+                      tree: sampleTree,
+                      showRootNode: false,
+                      expansionBehavior:
+                          ExpansionBehavior.collapseOthersAndSnapToTop,
+                      builder:
+                          (BuildContext context, TreeNode<CategoryModel> node) {
+                        return Container(
+                          color: node.data?.id == task.categoryID
+                              ? Colors.amber
+                              : null,
+                          child: ListTile(
+                            title: Text('${node.data?.name}'),
+                          ),
+                        );
+                      },
+                      onItemTap: getCategories,
                     ),
-                  );
-                },
-                onItemTap: getCategories,
-              ),
-            )
+                  )
           ],
         ),
       ),

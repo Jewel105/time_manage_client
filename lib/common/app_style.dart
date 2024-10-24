@@ -15,6 +15,7 @@ class AppStyle {
   static final TextStyle h3 = TextStyle(
     fontSize: 14.sp,
     fontWeight: FontWeight.w500,
+    color: AppColor.textBlackColor,
   );
 
   static final TextStyle body = TextStyle(
@@ -22,7 +23,7 @@ class AppStyle {
     color: AppColor.textBlackColor,
   );
   static final TextStyle tip = TextStyle(
-    fontSize: 14.sp,
+    fontSize: 12.sp,
     color: AppColor.textGreyColor,
   );
 }

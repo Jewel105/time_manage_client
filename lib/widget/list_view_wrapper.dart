@@ -7,10 +7,11 @@ import 'package:time_manage_client/widget/tips_widget.dart';
 
 typedef RefreshCallback = Future<void> Function();
 typedef LoadMoreCallback = Future<void> Function();
+typedef ItemWidgetBuilder<T> = Widget Function(BuildContext context, T index);
 
 class ListViewWrapper<T> extends StatefulWidget {
   final PageApiCall<T> pageApiCall;
-  final IndexedWidgetBuilder itemBuilder;
+  final ItemWidgetBuilder<T> itemBuilder;
   final bool shrinkWrap; // 是否反转滚动
   final double? itemExtent;
   final ScrollController? controller;
@@ -114,7 +115,8 @@ class _ListViewWrapperState<T> extends State<ListViewWrapper<T>> {
                       );
                 }
               }
-              return widget.itemBuilder(context, index);
+              T item = widget.pageApiCall.items[index];
+              return widget.itemBuilder(context, item);
             },
           )),
     );

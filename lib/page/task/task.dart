@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:time_manage_client/api/task_api.dart';
+import 'package:time_manage_client/common/app_color.dart';
 import 'package:time_manage_client/common/app_style.dart';
 import 'package:time_manage_client/models/task_model/task_model.dart';
 import 'package:time_manage_client/router/nav_ctrl.dart';
@@ -84,9 +85,55 @@ class _TaskState extends State<Task> {
           _buildDate(),
           Expanded(
               child: ListViewWrapper<TaskModel>(
-            itemBuilder: (BuildContext context, int index) {
+            itemBuilder: (BuildContext context, TaskModel item) {
               return ListTile(
-                title: Text(index.toString()),
+                title: Text(
+                  item.categories.replaceAll(',', '-'),
+                  style: AppStyle.h3,
+                ),
+                subtitle: Text(item.description),
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: <Widget>[
+                        Text(
+                          StringUtil.formatDuration(context, item.spentTime),
+                          style: AppStyle.h3,
+                        ),
+                        Text(
+                          '${StringUtil.dateTimeFormat(
+                            context,
+                            time: item.startTime,
+                            format: DateFormat.Hm,
+                          )}-${StringUtil.dateTimeFormat(
+                            context,
+                            time: item.endTime,
+                            format: DateFormat.Hm,
+                          )}',
+                          style: AppStyle.tip,
+                        ),
+                      ],
+                    ),
+                    IconButton(
+                      iconSize: 24.w,
+                      icon: const Icon(Icons.edit_outlined),
+                      onPressed: () {
+                        _saveTask(task: item);
+                      },
+                    ),
+                    IconButton(
+                      iconSize: 24.w,
+                      icon: const Icon(
+                        Icons.delete_outline,
+                        color: AppColor.textErrorColor,
+                      ),
+                      onPressed: () async {},
+                    ),
+                  ],
+                ),
               );
             },
             pageApiCall: pageApiCall,

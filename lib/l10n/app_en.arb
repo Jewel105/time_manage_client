@@ -38,5 +38,8 @@
   "editTask": "Edit Task",
   "startTime": "Start time",
   "endTime": "End time",
-  "startTimeTip":"End time of the last task"
+  "startTimeTip": "End time of the last task",
+  "hours": "H",
+  "minute": "Min",
+  "seconds": "s"
 }
