@@ -25,4 +25,10 @@ class CategoryApi {
         loading: true);
     return response;
   }
+
+  static Future<bool> deleteCategory(int id) async {
+    final bool response =
+        await _dio.post(url: '/categories/delete/$id', loading: true);
+    return response;
+  }
 }

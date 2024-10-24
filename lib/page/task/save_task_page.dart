@@ -1,17 +1,15 @@
 import 'package:animated_tree_view/animated_tree_view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl/intl.dart';
 import 'package:time_manage_client/api/category_api.dart';
 import 'package:time_manage_client/api/task_api.dart';
 import 'package:time_manage_client/common/app_style.dart';
 import 'package:time_manage_client/models/category_model/category_model.dart';
 import 'package:time_manage_client/models/task_model/task_model.dart';
+import 'package:time_manage_client/page/task/widget/time_picker.dart';
 import 'package:time_manage_client/router/nav_ctrl.dart';
 import 'package:time_manage_client/utils/extension_util.dart';
-import 'package:time_manage_client/utils/string_util.dart';
 import 'package:time_manage_client/widget/main_button.dart';
 
 class SaveTaskPage extends StatefulWidget {
@@ -148,77 +146,6 @@ class _SaveTaskPageState extends State<SaveTaskPage> {
           text: context.locale.submit,
           onPressed: task.categoryID != 0 ? _saveTask : null,
         ),
-      ),
-    );
-  }
-}
-
-class TimePicker extends StatefulWidget {
-  const TimePicker({
-    super.key,
-    required this.currentTime,
-    this.onChangeTime,
-  });
-
-  final DateTime currentTime;
-  final void Function(DateTime)? onChangeTime;
-
-  @override
-  State<TimePicker> createState() => _TimePickerState();
-}
-
-class _TimePickerState extends State<TimePicker> {
-  late DateTime currentTime;
-  @override
-  void initState() {
-    super.initState();
-    currentTime = widget.currentTime;
-  }
-
-  @override
-  void didUpdateWidget(TimePicker oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (widget.currentTime != currentTime) {
-      currentTime = widget.currentTime;
-    }
-  }
-
-  _changeDate() async {
-    DateTime today = DateTime.now();
-    Locale currentLocale = Localizations.localeOf(context);
-    DateTime? res = await DatePicker.showDateTimePicker(
-      context,
-      showTitleActions: true,
-      currentTime: currentTime,
-      minTime: today.subtract(const Duration(days: 365)),
-      maxTime: today,
-      locale:
-          currentLocale.languageCode == 'zh' ? LocaleType.zh : LocaleType.en,
-    );
-    if (res != null) {
-      currentTime = res;
-      setState(() {});
-      widget.onChangeTime?.call(res);
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: _changeDate,
-      child: Row(
-        children: <Widget>[
-          Text(
-            StringUtil.dateTimeFormat(
-              context,
-              time: currentTime.millisecondsSinceEpoch,
-              format: DateFormat.yMMMEd,
-              timeFormat: 'Hm',
-            ),
-            style: AppStyle.tip,
-          ),
-          const Icon(Icons.keyboard_arrow_down)
-        ],
       ),
     );
   }

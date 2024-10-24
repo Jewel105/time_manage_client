@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:time_manage_client/api/category_api.dart';
+import 'package:time_manage_client/common/app_color.dart';
 import 'package:time_manage_client/models/category_model/category_model.dart';
 import 'package:time_manage_client/page/category/widget/save_category.dart';
 import 'package:time_manage_client/router/nav_ctrl.dart';
@@ -67,6 +68,17 @@ class _CategoryState extends State<Category> {
                         icon: const Icon(Icons.edit_outlined),
                         onPressed: () {
                           _addSubCategory(category: item);
+                        },
+                      ),
+                      IconButton(
+                        iconSize: 24.w,
+                        icon: const Icon(
+                          Icons.delete_outline,
+                          color: AppColor.textErrorColor,
+                        ),
+                        onPressed: () async {
+                          await CategoryApi.deleteCategory(item.id);
+                          setState(() {});
                         },
                       ),
                       if (item.level < 4) const Icon(Icons.chevron_right),
