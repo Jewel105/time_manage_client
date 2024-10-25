@@ -112,3 +112,6 @@ select_platform(){
 
 deal_vsersion
 select_platform
+
+wait
+echo "全部完成！"
