@@ -49,7 +49,7 @@ if (project.hasProperty('dart-defines')) {
 }
 
 android {
-    namespace "com.time.manage"
+    namespace "co.time.manage"
     compileSdk flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
 

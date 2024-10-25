@@ -1,4 +1,4 @@
-package com.time.manage
+package co.time.manage
 
 import io.flutter.embedding.android.FlutterActivity
 
