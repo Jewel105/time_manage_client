@@ -3,6 +3,9 @@ plugins {
     id "kotlin-android"
     id "dev.flutter.flutter-gradle-plugin"
 }
+def keystorePropertiesFile = rootProject.file("key.properties")
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
@@ -22,10 +25,42 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
 
+def dartEnv = [
+    APP_ENV: '_dev',
+    APP_NAME: '_DEV'
+]
+
+if (project.hasProperty('dart-defines')) {
+    dartEnv = dartEnv + project.property('dart-defines')
+        .split(',')
+        .collectEntries { entry ->
+            def pair = new String(entry.decodeBase64(), 'UTF-8').split('=')
+            def key =  "KEY"
+            def value = "VALUE"
+            if(pair.first()=='APP_ENV'){
+                key = "APP_NAME"
+                value = pair.last()=='pro'?'':'_DEV'
+            }
+            [
+                (key): value,
+                (pair.first()): pair.last()=='pro'?'':"_${pair.last()}"
+            ]
+        }
+}
+
 android {
-    namespace "com.example.time_manage_client"
+    namespace "com.time.manage"
     compileSdk flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
+
+    signingConfigs {
+        release {
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+        }
+    }
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -41,21 +76,21 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.example.time_manage_client"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
+        applicationId "co.time.manage${dartEnv.APP_ENV}"
         minSdkVersion flutter.minSdkVersion
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        multiDexEnabled true
+        resValue "string","app_name","TIME${dartEnv.APP_NAME}"
     }
 
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
+        }
+        debug{
+            signingConfig signingConfigs.release
         }
     }
 }

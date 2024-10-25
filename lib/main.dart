@@ -64,7 +64,7 @@ class MyApp extends StatelessWidget {
             }
           },
           child: MaterialApp(
-            title: 'Time Manager',
+            title: 'TIME',
             theme: appTheme,
             onGenerateRoute: CreateRoutes.generateRoute,
             navigatorKey: navigatorKey,

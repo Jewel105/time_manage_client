@@ -1,4 +1,4 @@
-package com.example.time_manage_client
+package com.time.manage
 
 import io.flutter.embedding.android.FlutterActivity
 
