@@ -41,5 +41,11 @@
   "startTimeTip": "End time of the last task",
   "hours": "H",
   "minute": "Min",
-  "seconds": "s"
+  "seconds": "s",
+  "selectType": "Please select a statistical method",
+  "all": "All",
+  "byDay": "By day",
+  "byWeek": "By week",
+  "byMonth": "By month",
+  "pleaseSelect": "Please select"
 }
