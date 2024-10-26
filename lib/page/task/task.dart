@@ -22,6 +22,10 @@ class _TaskState extends State<Task> {
   DateTime today = DateTime.now();
 
   late final PageApiCall<TaskModel> pageApiCall;
+
+  int get endTimeMill =>
+      selectTime.add(const Duration(days: 1)).millisecondsSinceEpoch;
+
   @override
   void initState() {
     super.initState();
@@ -30,7 +34,7 @@ class _TaskState extends State<Task> {
       apiCall: TaskApi.getCategories,
       params: <String, dynamic>{
         'startTime': selectTime.millisecondsSinceEpoch,
-        'endTime': today.millisecondsSinceEpoch,
+        'endTime': endTimeMill,
       },
     );
   }
@@ -47,7 +51,7 @@ class _TaskState extends State<Task> {
     pageApiCall.refresh();
     pageApiCall.params = <String, dynamic>{
       'startTime': selectTime.millisecondsSinceEpoch,
-      'endTime': DateTime.now().millisecondsSinceEpoch,
+      'endTime': endTimeMill,
     };
     setState(() {});
   }
@@ -58,7 +62,7 @@ class _TaskState extends State<Task> {
       pageApiCall.refresh();
       pageApiCall.params = <String, dynamic>{
         'startTime': selectTime.millisecondsSinceEpoch,
-        'endTime': DateTime.now().millisecondsSinceEpoch,
+        'endTime': endTimeMill,
       };
       setState(() {});
     }

@@ -40,9 +40,9 @@ class StringUtil {
     String res = '';
 
     int hours = duration.inHours;
-    if (hours != 0) res += '$hours ${context.locale.hours}';
+    if (hours != 0) res += '$hours${context.locale.hours}';
     int minutes = (duration.inMinutes % 60);
-    if (minutes != 0) res += '$minutes ${context.locale.minute}';
+    if (minutes != 0) res += '$minutes${context.locale.minute}';
     return res;
   }
 }
