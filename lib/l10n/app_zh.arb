@@ -37,8 +37,9 @@
   "seconds": "秒",
   "selectType": "请选择统计方式",
   "all": "全部",
-  "useDay": "按天统计",
-  "useWeek": "按周统计",
-  "useMonth": "按月统计",
-  "pleaseSelect": "请选择"
+  "byDay": "按天统计",
+  "byWeek": "按周统计",
+  "byMonth": "按月统计",
+  "pleaseSelect": "请选择",
+  "selectCategoryTip": "点击可展开子分类"
 }

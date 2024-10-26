@@ -20,7 +20,7 @@ class MainButton extends StatelessWidget {
     required this.text,
     this.textStyle,
     this.preIcon,
-    this.bgColor,
+    this.bgColor = AppColor.appMainColor,
     this.onPressed,
     this.height,
     this.width,

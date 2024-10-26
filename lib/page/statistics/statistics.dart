@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:time_manage_client/page/statistics/widget/select_widget.dart';
+import 'package:time_manage_client/page/statistics/widget/statistics_select_category.dart';
 import 'package:time_manage_client/utils/index.dart';
+import 'package:time_manage_client/widget/select_widget.dart';
 
 class Statistics extends StatefulWidget {
   const Statistics({super.key});
@@ -23,12 +24,18 @@ class _StatisticsState extends State<Statistics> {
         padding: EdgeInsets.symmetric(horizontal: 16.w),
         child: Column(
           children: <Widget>[
-            SelectWidget(
-              controller: typeController,
-              options: <SelectItem>[
-                SelectItem(value: context.locale.byDay, code: 1),
-                SelectItem(value: context.locale.byWeek, code: 2),
-                SelectItem(value: context.locale.byMonth, code: 3),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                SelectWidget(
+                  controller: typeController,
+                  options: <SelectItem>[
+                    SelectItem(value: context.locale.byDay, code: 1),
+                    SelectItem(value: context.locale.byWeek, code: 2),
+                    SelectItem(value: context.locale.byMonth, code: 3),
+                  ],
+                ),
+                StatisticsSelectCategory(),
               ],
             ),
             Container(),
