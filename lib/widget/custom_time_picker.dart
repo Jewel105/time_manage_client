@@ -8,7 +8,7 @@ class CustomTimePicker extends StatefulWidget {
     super.key,
     required this.typeCode,
   });
-  final int typeCode;
+  final int typeCode; // 1: 日, 2: 周, 3: 月, 4: 年
   @override
   State<CustomTimePicker> createState() => _CustomTimePickerState();
 }
@@ -33,7 +33,7 @@ class _CustomTimePickerState extends State<CustomTimePicker> {
     switch (widget.typeCode) {
       case 1: // 选日
         pickerModel = DatePickerModel(
-          currentTime: DateTime.now(),
+          currentTime: _selectedDate,
           minTime: DateTime.now().subtract(const Duration(days: 3650)),
           maxTime: DateTime.now(),
           locale: currentLocale.languageCode == 'zh'
@@ -43,7 +43,7 @@ class _CustomTimePickerState extends State<CustomTimePicker> {
         break;
       case 2: // 周
         pickerModel = WeekPicker(
-          currentTime: DateTime.now(),
+          currentTime: _selectedDate,
           minTime: DateTime.now().subtract(const Duration(days: 3650)),
           maxTime: DateTime.now(),
           locale: currentLocale.languageCode == 'zh'
@@ -53,7 +53,7 @@ class _CustomTimePickerState extends State<CustomTimePicker> {
         break;
       case 3: // 月
         pickerModel = MonthPicker(
-          currentTime: DateTime.now(),
+          currentTime: _selectedDate,
           minTime: DateTime.now().subtract(const Duration(days: 3650)),
           maxTime: DateTime.now(),
           locale: currentLocale.languageCode == 'zh'
@@ -62,17 +62,18 @@ class _CustomTimePickerState extends State<CustomTimePicker> {
         );
         break;
       case 4: // 年
-        //   pickerModel = YearPicker(
-        //   currentTime: DateTime.now(),
-        //   minTime: DateTime.now().subtract(const Duration(days: 3650)),
-        //   maxTime: DateTime.now(),
-        //   locale:
-        //       currentLocale.languageCode == 'zh' ? LocaleType.zh : LocaleType.en,
-        // );
+        pickerModel = YearPicker(
+          currentTime: _selectedDate,
+          minTime: DateTime.now().subtract(const Duration(days: 3650)),
+          maxTime: DateTime.now(),
+          locale: currentLocale.languageCode == 'zh'
+              ? LocaleType.zh
+              : LocaleType.en,
+        );
         break;
       default:
         pickerModel = DatePickerModel(
-          currentTime: DateTime.now(),
+          currentTime: _selectedDate,
           minTime: DateTime.now().subtract(const Duration(days: 3650)),
           maxTime: DateTime.now(),
           locale: currentLocale.languageCode == 'zh'
@@ -89,8 +90,6 @@ class _CustomTimePickerState extends State<CustomTimePicker> {
       pickerModel: pickerModel,
     );
     if (d != null) {
-      print(d);
-      print(d.millisecondsSinceEpoch);
       _selectedDate = d;
       setState(() {});
     }
@@ -523,15 +522,6 @@ class MonthPicker extends CommonPickerModel {
   }
 
   @override
-  String? rightStringAtIndex(int index) {
-    if (index >= 0 && index < rightList.length) {
-      return rightList[index];
-    } else {
-      return null;
-    }
-  }
-
-  @override
   void setLeftIndex(int index) {
     super.setLeftIndex(index);
     //adjust middle
@@ -618,5 +608,62 @@ class MonthPicker extends CommonPickerModel {
     return currentTime.isUtc
         ? DateTime.utc(currentTime.year, currentTime.month)
         : DateTime(currentTime.year, currentTime.month);
+  }
+}
+
+class YearPicker extends CommonPickerModel {
+  late DateTime maxTime;
+  late DateTime minTime;
+  YearPicker({
+    required DateTime currentTime,
+    required LocaleType locale,
+    DateTime? maxTime,
+    DateTime? minTime,
+  }) : super(locale: locale) {
+    this.maxTime = maxTime ?? DateTime(2049, 12, 31);
+    this.minTime = minTime ?? DateTime(1970, 1, 1);
+
+    this.currentTime = currentTime;
+    _fillLeftLists();
+
+    setLeftIndex(this.currentTime.year - this.minTime.year);
+    setMiddleIndex(0);
+    setRightIndex(0);
+  }
+
+  void _fillLeftLists() {
+    leftList =
+        List<String>.generate(maxTime.year - minTime.year + 1, (int index) {
+      return '${minTime.year + index}${_localeYear()}';
+    });
+  }
+
+  String _localeYear() {
+    if (locale == LocaleType.zh) {
+      return '年';
+    } else {
+      return '';
+    }
+  }
+
+  @override
+  String? leftStringAtIndex(int index) {
+    if (index >= 0 && index < leftList.length) {
+      return leftList[index];
+    } else {
+      return null;
+    }
+  }
+
+  @override
+  List<int> layoutProportions() {
+    return <int>[1, 0, 0];
+  }
+
+  @override
+  DateTime finalTime() {
+    return currentTime.isUtc
+        ? DateTime.utc(currentTime.year)
+        : DateTime(currentTime.year);
   }
 }
