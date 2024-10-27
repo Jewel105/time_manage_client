@@ -47,6 +47,7 @@
   "byDay": "By day",
   "byWeek": "By week",
   "byMonth": "By month",
+  "byYear": "By year",
   "pleaseSelect": "Please select ",
   "selectCategoryTip": "Click to expand subcategories"
 }

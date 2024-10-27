@@ -10,7 +10,7 @@ class SelectItem {
 }
 
 class SelectController {
-  int code = 0;
+  ValueNotifier<int> code = ValueNotifier<int>(0);
   SelectItem item = SelectItem(code: 0, value: 'Please Select');
 }
 
@@ -35,7 +35,7 @@ class _SelectWidgetState extends State<SelectWidget> {
     super.initState();
     controller = widget.controller ?? SelectController();
     controller.item = widget.options.firstWhere(
-      (SelectItem item) => item.code == controller.code,
+      (SelectItem item) => item.code == controller.code.value,
       orElse: () => SelectItem(code: 0),
     );
   }
@@ -55,11 +55,11 @@ class _SelectWidgetState extends State<SelectWidget> {
             return ListTile(
               title: Text(item.value ?? ''),
               onTap: () {
-                controller.code = item.code;
+                controller.code.value = item.code;
                 controller.item = item;
                 NavCtrl.back(arguments: true);
               },
-              selected: controller.code == item.code,
+              selected: controller.code.value == item.code,
             );
           },
         ),

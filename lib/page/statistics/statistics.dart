@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:time_manage_client/page/statistics/widget/statistics_select_category.dart';
 import 'package:time_manage_client/utils/index.dart';
+import 'package:time_manage_client/widget/custom_time_picker.dart';
 import 'package:time_manage_client/widget/select_widget.dart';
 
 class Statistics extends StatefulWidget {
@@ -12,7 +13,7 @@ class Statistics extends StatefulWidget {
 }
 
 class _StatisticsState extends State<Statistics> {
-  final SelectController typeController = SelectController()..code = 1;
+  final SelectController typeController = SelectController()..code.value = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -33,10 +34,17 @@ class _StatisticsState extends State<Statistics> {
                     SelectItem(value: context.locale.byDay, code: 1),
                     SelectItem(value: context.locale.byWeek, code: 2),
                     SelectItem(value: context.locale.byMonth, code: 3),
+                    SelectItem(value: context.locale.byYear, code: 4),
                   ],
                 ),
-                StatisticsSelectCategory(),
+                const StatisticsSelectCategory(),
               ],
+            ),
+            ValueListenableBuilder<int>(
+              valueListenable: typeController.code,
+              builder: (BuildContext context, int typeCode, _) {
+                return CustomTimePicker(typeCode: typeCode);
+              },
             ),
             Container(),
           ],
