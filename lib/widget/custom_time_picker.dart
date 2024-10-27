@@ -15,35 +15,129 @@ class CustomTimePicker extends StatefulWidget {
 
 class _CustomTimePickerState extends State<CustomTimePicker> {
   DateTime _selectedDate = DateTime.now();
+  late CommonPickerModel pickerModel;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void didUpdateWidget(CustomTimePicker old) {
+    super.didUpdateWidget(old);
+    _initPicker();
+  }
+
+  _initPicker() async {
+    Locale currentLocale = Localizations.localeOf(context);
+    switch (widget.typeCode) {
+      case 1: // 选日
+        pickerModel = DatePickerModel(
+          currentTime: DateTime.now(),
+          minTime: DateTime.now().subtract(const Duration(days: 3650)),
+          maxTime: DateTime.now(),
+          locale: currentLocale.languageCode == 'zh'
+              ? LocaleType.zh
+              : LocaleType.en,
+        );
+        break;
+      case 2: // 周
+        pickerModel = WeekPicker(
+          currentTime: DateTime.now(),
+          minTime: DateTime.now().subtract(const Duration(days: 3650)),
+          maxTime: DateTime.now(),
+          locale: currentLocale.languageCode == 'zh'
+              ? LocaleType.zh
+              : LocaleType.en,
+        );
+        break;
+      case 3: // 月
+        pickerModel = MonthPicker(
+          currentTime: DateTime.now(),
+          minTime: DateTime.now().subtract(const Duration(days: 3650)),
+          maxTime: DateTime.now(),
+          locale: currentLocale.languageCode == 'zh'
+              ? LocaleType.zh
+              : LocaleType.en,
+        );
+        break;
+      case 4: // 年
+        //   pickerModel = YearPicker(
+        //   currentTime: DateTime.now(),
+        //   minTime: DateTime.now().subtract(const Duration(days: 3650)),
+        //   maxTime: DateTime.now(),
+        //   locale:
+        //       currentLocale.languageCode == 'zh' ? LocaleType.zh : LocaleType.en,
+        // );
+        break;
+      default:
+        pickerModel = DatePickerModel(
+          currentTime: DateTime.now(),
+          minTime: DateTime.now().subtract(const Duration(days: 3650)),
+          maxTime: DateTime.now(),
+          locale: currentLocale.languageCode == 'zh'
+              ? LocaleType.zh
+              : LocaleType.en,
+        );
+        return;
+    }
+  }
 
   _showSelection() async {
-    Locale currentLocale = Localizations.localeOf(context);
-
     DateTime? d = await DatePicker.showPicker(
       context,
-      pickerModel: WeekPicker(
-        currentTime: DateTime.now(),
-        maxTime: DateTime.now(),
-        locale:
-            currentLocale.languageCode == 'zh' ? LocaleType.zh : LocaleType.en,
-      ),
+      pickerModel: pickerModel,
     );
     if (d != null) {
+      print(d);
       print(d.millisecondsSinceEpoch);
       _selectedDate = d;
       setState(() {});
     }
   }
 
+  String get dayText => StringUtil.dateTimeFormat(
+        context,
+        time: _selectedDate.millisecondsSinceEpoch,
+        format: DateFormat.yMMMd,
+      );
+
+  String get monthText => StringUtil.dateTimeFormat(
+        context,
+        time: _selectedDate.millisecondsSinceEpoch,
+        format: DateFormat.yMMMM,
+      );
+
+  String get yearText => StringUtil.dateTimeFormat(
+        context,
+        time: _selectedDate.millisecondsSinceEpoch,
+        format: DateFormat.y,
+      );
+
   String get weekText {
     List<DateTime> list = calcWeekDays(_selectedDate);
     List<String> week = list
         .map(
           (DateTime date) => StringUtil.dateTimeFormat(context,
-              time: date.millisecondsSinceEpoch, format: DateFormat.yMd),
+              time: date.millisecondsSinceEpoch, format: DateFormat.yMMMd),
         )
         .toList();
     return week.join('-');
+  }
+
+  String get text {
+    switch (widget.typeCode) {
+      case 1:
+        return dayText;
+      case 2:
+        return weekText;
+      case 3:
+        return monthText;
+      case 4:
+        return yearText;
+      default:
+        return dayText;
+    }
   }
 
   @override
@@ -52,7 +146,7 @@ class _CustomTimePickerState extends State<CustomTimePicker> {
       onTap: _showSelection,
       child: Row(
         children: <Widget>[
-          Text(weekText),
+          Text(text),
           const Icon(Icons.keyboard_arrow_down),
         ],
       ),
@@ -113,8 +207,8 @@ class WeekPicker extends CommonPickerModel {
     int minMonth = _minMonthOfCurrentYear();
     int maxMonth = _maxMonthOfCurrentYear();
 
-    this.middleList = List.generate(maxMonth - minMonth + 1, (int index) {
-      return '${_localeMonth(minMonth + index)}';
+    middleList = List<String>.generate(maxMonth - minMonth + 1, (int index) {
+      return _localeMonth(minMonth + index);
     });
   }
 
@@ -342,5 +436,187 @@ class WeekPicker extends CommonPickerModel {
     return currentTime.isUtc
         ? DateTime.utc(currentTime.year, currentTime.month, currentTime.day)
         : DateTime(currentTime.year, currentTime.month, currentTime.day);
+  }
+}
+
+class MonthPicker extends CommonPickerModel {
+  late DateTime maxTime;
+  late DateTime minTime;
+  MonthPicker({
+    required DateTime currentTime,
+    required LocaleType locale,
+    DateTime? maxTime,
+    DateTime? minTime,
+  }) : super(locale: locale) {
+    this.maxTime = maxTime ?? DateTime(2049, 12, 31);
+    this.minTime = minTime ?? DateTime(1970, 1, 1);
+
+    this.currentTime = currentTime;
+    _fillLeftLists();
+    _fillMiddleLists();
+
+    setLeftIndex(this.currentTime.year - this.minTime.year);
+    setMiddleIndex(this.currentTime.month - 1);
+    setRightIndex(0);
+  }
+
+  void _fillLeftLists() {
+    leftList =
+        List<String>.generate(maxTime.year - minTime.year + 1, (int index) {
+      return '${minTime.year + index}${_localeYear()}';
+    });
+  }
+
+  void _fillMiddleLists() {
+    int minMonth = _minMonthOfCurrentYear();
+    int maxMonth = _maxMonthOfCurrentYear();
+
+    middleList = List<String>.generate(maxMonth - minMonth + 1, (int index) {
+      return _localeMonth(minMonth + index);
+    });
+  }
+
+  int _maxMonthOfCurrentYear() {
+    return currentTime.year == maxTime.year ? maxTime.month : 12;
+  }
+
+  int _minMonthOfCurrentYear() {
+    return currentTime.year == minTime.year ? minTime.month : 1;
+  }
+
+  String _localeYear() {
+    if (locale == LocaleType.zh) {
+      return '年';
+    } else {
+      return '';
+    }
+  }
+
+  String _localeMonth(int month) {
+    if (locale == LocaleType.zh || locale == LocaleType.jp) {
+      return '$month月';
+    } else if (locale == LocaleType.ko) {
+      return '$month월';
+    } else {
+      List<String> monthStrings =
+          i18nObjInLocale(locale)['monthLong'] as List<String>;
+      return monthStrings[month - 1];
+    }
+  }
+
+  @override
+  String? leftStringAtIndex(int index) {
+    if (index >= 0 && index < leftList.length) {
+      return leftList[index];
+    } else {
+      return null;
+    }
+  }
+
+  @override
+  String? middleStringAtIndex(int index) {
+    if (index >= 0 && index < middleList.length) {
+      return middleList[index];
+    } else {
+      return null;
+    }
+  }
+
+  @override
+  String? rightStringAtIndex(int index) {
+    if (index >= 0 && index < rightList.length) {
+      return rightList[index];
+    } else {
+      return null;
+    }
+  }
+
+  @override
+  void setLeftIndex(int index) {
+    super.setLeftIndex(index);
+    //adjust middle
+    int destYear = index + minTime.year;
+    int minMonth = _minMonthOfCurrentYear();
+    DateTime newTime;
+    //change date time
+    if (currentTime.month == 2 && currentTime.day == 29) {
+      newTime = currentTime.isUtc
+          ? DateTime.utc(
+              destYear,
+              currentTime.month,
+              calcDateCount(destYear, 2),
+            )
+          : DateTime(
+              destYear,
+              currentTime.month,
+              calcDateCount(destYear, 2),
+            );
+    } else {
+      newTime = currentTime.isUtc
+          ? DateTime.utc(
+              destYear,
+              currentTime.month,
+              currentTime.day,
+            )
+          : DateTime(
+              destYear,
+              currentTime.month,
+              currentTime.day,
+            );
+    }
+    //min/max check
+    if (newTime.isAfter(maxTime)) {
+      currentTime = maxTime;
+    } else if (newTime.isBefore(minTime)) {
+      currentTime = minTime;
+    } else {
+      currentTime = newTime;
+    }
+
+    _fillMiddleLists();
+    minMonth = _minMonthOfCurrentYear();
+    setMiddleIndex(currentTime.month - minMonth);
+  }
+
+  @override
+  void setMiddleIndex(int index) {
+    super.setMiddleIndex(index);
+    //adjust right
+    int minMonth = _minMonthOfCurrentYear();
+    int destMonth = minMonth + index;
+    DateTime newTime;
+    //change date time
+    int dayCount = calcDateCount(currentTime.year, destMonth);
+    newTime = currentTime.isUtc
+        ? DateTime.utc(
+            currentTime.year,
+            destMonth,
+            currentTime.day <= dayCount ? currentTime.day : dayCount,
+          )
+        : DateTime(
+            currentTime.year,
+            destMonth,
+            currentTime.day <= dayCount ? currentTime.day : dayCount,
+          );
+    //min/max check
+    if (newTime.isAfter(maxTime)) {
+      currentTime = maxTime;
+    } else if (newTime.isBefore(minTime)) {
+      currentTime = minTime;
+    } else {
+      currentTime = newTime;
+    }
+  }
+
+  @override
+  List<int> layoutProportions() {
+    return <int>[1, 1, 0];
+  }
+
+  @override
+  DateTime finalTime() {
+    return currentTime.isUtc
+        ? DateTime.utc(currentTime.year, currentTime.month)
+        : DateTime(currentTime.year, currentTime.month);
   }
 }
