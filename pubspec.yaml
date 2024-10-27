@@ -1,5 +1,5 @@
 name: time_manage_client
-description: "A new Flutter project."
+description: 'A new Flutter project.'
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 0.0.2+2
 
@@ -26,6 +26,7 @@ dependencies:
   json_annotation: ^4.9.0
   flutter_datetime_picker_plus: ^2.2.0
   animated_tree_view: ^2.3.0
+  fl_chart: ^0.69.0
 
 dev_dependencies:
   flutter_test:

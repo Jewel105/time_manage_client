@@ -144,6 +144,7 @@ class _CustomTimePickerState extends State<CustomTimePicker> {
     return GestureDetector(
       onTap: _showSelection,
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Text(text),
           const Icon(Icons.keyboard_arrow_down),

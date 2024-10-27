@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:time_manage_client/page/statistics/widget/pie_widget.dart';
 import 'package:time_manage_client/page/statistics/widget/statistics_select_category.dart';
 import 'package:time_manage_client/utils/index.dart';
 import 'package:time_manage_client/widget/custom_time_picker.dart';
@@ -24,6 +25,7 @@ class _StatisticsState extends State<Statistics> {
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16.w),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -40,6 +42,7 @@ class _StatisticsState extends State<Statistics> {
                 const StatisticsSelectCategory(),
               ],
             ),
+            SizedBox(height: 16.h),
             ValueListenableBuilder<int>(
               valueListenable: typeController.code,
               builder: (BuildContext context, int typeCode, _) {
@@ -47,6 +50,7 @@ class _StatisticsState extends State<Statistics> {
               },
             ),
             Container(),
+            PieWidget(),
           ],
         ),
       ),
