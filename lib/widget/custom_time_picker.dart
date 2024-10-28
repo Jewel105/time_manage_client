@@ -7,8 +7,10 @@ class CustomTimePicker extends StatefulWidget {
   const CustomTimePicker({
     super.key,
     required this.typeCode,
+    required this.selectedDates,
   });
   final int typeCode; // 1: 日, 2: 周, 3: 月, 4: 年
+  final ValueNotifier<List<DateTime>> selectedDates;
   @override
   State<CustomTimePicker> createState() => _CustomTimePickerState();
 }
@@ -26,6 +28,28 @@ class _CustomTimePickerState extends State<CustomTimePicker> {
   void didUpdateWidget(CustomTimePicker old) {
     super.didUpdateWidget(old);
     _initPicker();
+  }
+
+  _calcRangeDate(DateTime date) {
+    switch (widget.typeCode) {
+      case 1:
+        List<DateTime> list = <DateTime>[
+          _selectedDate,
+          DateTime(_selectedDate.year, _selectedDate.month, _selectedDate.day,
+              23, 59, 59),
+        ];
+        widget.selectedDates.value = list;
+        break;
+      case 2:
+        widget.selectedDates.value = calcWeekDays(_selectedDate);
+        break;
+      case 3:
+        break;
+      case 4:
+        break;
+      default:
+        break;
+    }
   }
 
   _initPicker() async {
@@ -114,8 +138,7 @@ class _CustomTimePickerState extends State<CustomTimePicker> {
       );
 
   String get weekText {
-    List<DateTime> list = calcWeekDays(_selectedDate);
-    List<String> week = list
+    List<String> week = widget.selectedDates.value
         .map(
           (DateTime date) => StringUtil.dateTimeFormat(context,
               time: date.millisecondsSinceEpoch, format: DateFormat.yMMMd),
@@ -170,7 +193,8 @@ int calcDateCount(int year, int month) {
 List<DateTime> calcWeekDays(DateTime dateTime) {
   int offset = dateTime.weekday - 1;
   DateTime startTime = dateTime.subtract(Duration(days: offset));
-  DateTime endTime = startTime.add(const Duration(days: 6));
+  DateTime end = startTime.add(const Duration(days: 6));
+  DateTime endTime = DateTime(end.year, end.month, end.day, 23, 59, 59);
   return <DateTime>[startTime, endTime];
 }
 

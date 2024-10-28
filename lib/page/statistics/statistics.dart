@@ -15,7 +15,9 @@ class Statistics extends StatefulWidget {
 
 class _StatisticsState extends State<Statistics> {
   final SelectController typeController = SelectController()..code.value = 1;
-
+  final List<int> categoryIDs = <int>[];
+  final ValueNotifier<List<DateTime>> selectedDates =
+      ValueNotifier<List<DateTime>>(<DateTime>[]);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,17 +41,19 @@ class _StatisticsState extends State<Statistics> {
                     SelectItem(value: context.locale.byYear, code: 4),
                   ],
                 ),
-                const StatisticsSelectCategory(),
+                StatisticsSelectCategory(categoryIDs: categoryIDs),
               ],
             ),
             SizedBox(height: 16.h),
             ValueListenableBuilder<int>(
               valueListenable: typeController.code,
               builder: (BuildContext context, int typeCode, _) {
-                return CustomTimePicker(typeCode: typeCode);
+                return CustomTimePicker(
+                  typeCode: typeCode,
+                  selectedDates: selectedDates,
+                );
               },
             ),
-            Container(),
             PieWidget(),
           ],
         ),

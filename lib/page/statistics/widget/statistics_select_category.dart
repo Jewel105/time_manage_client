@@ -6,7 +6,9 @@ import 'package:time_manage_client/widget/select_category.dart';
 class StatisticsSelectCategory extends StatefulWidget {
   const StatisticsSelectCategory({
     super.key,
+    required this.categoryIDs,
   });
+  final List<int> categoryIDs;
 
   @override
   State<StatisticsSelectCategory> createState() =>
@@ -14,7 +16,6 @@ class StatisticsSelectCategory extends StatefulWidget {
 }
 
 class _StatisticsSelectCategoryState extends State<StatisticsSelectCategory> {
-  final List<int> _categoryIDs = <int>[];
   void _showSelection() async {
     bool? res = await showModalBottomSheet(
       context: context,
@@ -24,8 +25,10 @@ class _StatisticsSelectCategoryState extends State<StatisticsSelectCategory> {
         padding: EdgeInsets.all(16.w),
         child: SelectCategory(
           multiselect: true,
-          categoryIDs: _categoryIDs,
-          onChanged: (_) {},
+          categoryIDs: widget.categoryIDs,
+          // onChanged: (_) {
+
+          // },
         ),
       ),
     );
