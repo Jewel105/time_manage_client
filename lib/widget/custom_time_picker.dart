@@ -176,7 +176,9 @@ class _CustomTimePickerState extends State<CustomTimePicker> {
       );
 
   String get weekText {
-    List<String> week = widget.selectedDates.value
+    List<DateTime> list = calcWeekDays(_selectedDate);
+
+    List<String> week = list
         .map(
           (DateTime date) => StringUtil.dateTimeFormat(context,
               time: date.millisecondsSinceEpoch, format: DateFormat.yMMMd),
