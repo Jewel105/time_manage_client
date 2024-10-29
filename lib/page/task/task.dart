@@ -17,7 +17,7 @@ class Task extends StatefulWidget {
   State<Task> createState() => _TaskState();
 }
 
-class _TaskState extends State<Task> {
+class _TaskState extends State<Task> with AutomaticKeepAliveClientMixin {
   DateTime selectTime = DateTime.now();
   DateTime today = DateTime.now();
 
@@ -79,6 +79,7 @@ class _TaskState extends State<Task> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(context.locale.task),
@@ -179,4 +180,7 @@ class _TaskState extends State<Task> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

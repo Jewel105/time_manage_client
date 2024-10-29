@@ -26,7 +26,6 @@ class PieModel {
   factory PieModel.emptyInstance() =>
       PieModel(categoryID: 0, categoryName: '', value: 0);
 
-  @override
   PieModel operator +(PieModel other) {
     return PieModel(
       categoryID: 0,

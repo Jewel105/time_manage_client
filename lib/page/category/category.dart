@@ -16,7 +16,8 @@ class Category extends StatefulWidget {
   State<Category> createState() => _CategoryState();
 }
 
-class _CategoryState extends State<Category> {
+class _CategoryState extends State<Category>
+    with AutomaticKeepAliveClientMixin {
   void _addSubCategory({required CategoryModel category}) async {
     bool? res = await showModalBottomSheet(
       context: context,
@@ -30,6 +31,7 @@ class _CategoryState extends State<Category> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(context.locale.category),
@@ -46,52 +48,60 @@ class _CategoryState extends State<Category> {
           SizedBox(width: 10.w),
         ],
       ),
-      body: FutureBuilder<List<CategoryModel>>(
-          future: CategoryApi.getCategories(parentID: widget.parent.id),
-          builder: (
-            BuildContext context,
-            AsyncSnapshot<List<CategoryModel>> snapshot,
-          ) {
-            List<CategoryModel> list = snapshot.data ?? <CategoryModel>[];
-            return ListView.builder(
-              itemCount: list.length,
-              itemBuilder: (BuildContext context, int index) {
-                CategoryModel item = list[index];
-                return ListTile(
-                  leading: const Icon(Icons.category_outlined),
-                  title: Text(item.name),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      IconButton(
-                        iconSize: 24.w,
-                        icon: const Icon(Icons.edit_outlined),
-                        onPressed: () {
-                          _addSubCategory(category: item);
-                        },
-                      ),
-                      IconButton(
-                        iconSize: 24.w,
-                        icon: const Icon(
-                          Icons.delete_outline,
-                          color: AppColor.textErrorColor,
+      body: RefreshIndicator(
+        onRefresh: () async {
+          setState(() {});
+        },
+        child: FutureBuilder<List<CategoryModel>>(
+            future: CategoryApi.getCategories(parentID: widget.parent.id),
+            builder: (
+              BuildContext context,
+              AsyncSnapshot<List<CategoryModel>> snapshot,
+            ) {
+              List<CategoryModel> list = snapshot.data ?? <CategoryModel>[];
+              return ListView.builder(
+                itemCount: list.length,
+                itemBuilder: (BuildContext context, int index) {
+                  CategoryModel item = list[index];
+                  return ListTile(
+                    leading: const Icon(Icons.category_outlined),
+                    title: Text(item.name),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        IconButton(
+                          iconSize: 24.w,
+                          icon: const Icon(Icons.edit_outlined),
+                          onPressed: () {
+                            _addSubCategory(category: item);
+                          },
                         ),
-                        onPressed: () async {
-                          await CategoryApi.deleteCategory(item.id);
-                          setState(() {});
-                        },
-                      ),
-                      if (item.level < 4) const Icon(Icons.chevron_right),
-                    ],
-                  ),
-                  onTap: () {
-                    if (item.level >= 4) return;
-                    NavCtrl.push(Routes.category, arguments: item);
-                  },
-                );
-              },
-            );
-          }),
+                        IconButton(
+                          iconSize: 24.w,
+                          icon: const Icon(
+                            Icons.delete_outline,
+                            color: AppColor.textErrorColor,
+                          ),
+                          onPressed: () async {
+                            await CategoryApi.deleteCategory(item.id);
+                            setState(() {});
+                          },
+                        ),
+                        if (item.level < 4) const Icon(Icons.chevron_right),
+                      ],
+                    ),
+                    onTap: () {
+                      if (item.level >= 4) return;
+                      NavCtrl.push(Routes.category, arguments: item);
+                    },
+                  );
+                },
+              );
+            }),
+      ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
