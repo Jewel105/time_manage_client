@@ -38,4 +38,27 @@ class CategoryModel {
 
   factory CategoryModel.emptyInstance() => CategoryModel(
       id: 0, level: 0, name: '', parentID: 0, path: '', userID: 0);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is CategoryModel &&
+        other.id == id &&
+        other.level == level &&
+        other.name == name &&
+        other.parentID == parentID &&
+        other.path == path &&
+        other.userID == userID;
+  }
+
+  @override
+  int get hashCode {
+    return id.hashCode ^
+        level.hashCode ^
+        name.hashCode ^
+        parentID.hashCode ^
+        path.hashCode ^
+        userID.hashCode;
+  }
 }

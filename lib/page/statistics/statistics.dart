@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:time_manage_client/models/category_model/category_model.dart';
 import 'package:time_manage_client/page/statistics/widget/pie_widget.dart';
 import 'package:time_manage_client/page/statistics/widget/statistics_select_category.dart';
 import 'package:time_manage_client/utils/index.dart';
@@ -15,7 +16,8 @@ class Statistics extends StatefulWidget {
 
 class _StatisticsState extends State<Statistics> {
   final SelectController typeController = SelectController()..code.value = 1;
-  final List<int> categoryIDs = <int>[];
+  final ValueNotifier<List<CategoryModel>> categories =
+      ValueNotifier<List<CategoryModel>>(<CategoryModel>[]);
   final ValueNotifier<List<DateTime>> selectedDates =
       ValueNotifier<List<DateTime>>(<DateTime>[]);
   @override
@@ -41,7 +43,7 @@ class _StatisticsState extends State<Statistics> {
                     SelectItem(value: context.locale.byYear, code: 4),
                   ],
                 ),
-                StatisticsSelectCategory(categoryIDs: categoryIDs),
+                StatisticsSelectCategory(categories: categories),
               ],
             ),
             SizedBox(height: 16.h),
@@ -54,7 +56,18 @@ class _StatisticsState extends State<Statistics> {
                 );
               },
             ),
-            PieWidget(),
+            ListenableBuilder(
+              listenable:
+                  Listenable.merge(<Listenable?>[categories, selectedDates]),
+              builder: (BuildContext context, _) {
+                print(categories.value);
+                print(selectedDates.value);
+                return PieWidget(
+                  categories: categories,
+                  selectedDates: selectedDates,
+                );
+              },
+            ),
           ],
         ),
       ),

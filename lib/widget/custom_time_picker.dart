@@ -22,19 +22,30 @@ class _CustomTimePickerState extends State<CustomTimePicker> {
   @override
   void initState() {
     super.initState();
+    _calcRangeDate();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    print("didChangeDependencies");
+    _initPicker();
   }
 
   @override
   void didUpdateWidget(CustomTimePicker old) {
     super.didUpdateWidget(old);
     _initPicker();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _calcRangeDate();
+    });
   }
 
-  _calcRangeDate(DateTime date) {
+  _calcRangeDate() {
     switch (widget.typeCode) {
       case 1:
         List<DateTime> list = <DateTime>[
-          _selectedDate,
+          DateTime(_selectedDate.year, _selectedDate.month, _selectedDate.day),
           DateTime(_selectedDate.year, _selectedDate.month, _selectedDate.day,
               23, 59, 59),
         ];
@@ -44,10 +55,36 @@ class _CustomTimePickerState extends State<CustomTimePicker> {
         widget.selectedDates.value = calcWeekDays(_selectedDate);
         break;
       case 3:
+        DateTime currentMonth =
+            DateTime(_selectedDate.year, _selectedDate.month);
+        DateTime nextMonth =
+            DateTime(_selectedDate.year, _selectedDate.month + 1);
+        DateTime lastDayOfMonth = nextMonth.subtract(Duration(days: 1));
+        List<DateTime> list = <DateTime>[
+          currentMonth,
+          DateTime(lastDayOfMonth.year, lastDayOfMonth.month,
+              lastDayOfMonth.day, 23, 59, 59),
+        ];
+        widget.selectedDates.value = list;
         break;
       case 4:
+        DateTime currentYear = DateTime(_selectedDate.year);
+        DateTime nextYear = DateTime(_selectedDate.year + 1);
+        DateTime lastDayOfYear = nextYear.subtract(Duration(days: 1));
+        List<DateTime> list = <DateTime>[
+          currentYear,
+          DateTime(lastDayOfYear.year, lastDayOfYear.month, lastDayOfYear.day,
+              23, 59, 59),
+        ];
+        widget.selectedDates.value = list;
         break;
       default:
+        List<DateTime> list = <DateTime>[
+          DateTime(_selectedDate.year, _selectedDate.month, _selectedDate.day),
+          DateTime(_selectedDate.year, _selectedDate.month, _selectedDate.day,
+              23, 59, 59),
+        ];
+        widget.selectedDates.value = list;
         break;
     }
   }
@@ -115,6 +152,7 @@ class _CustomTimePickerState extends State<CustomTimePicker> {
     );
     if (d != null) {
       _selectedDate = d;
+      _calcRangeDate();
       setState(() {});
     }
   }
@@ -192,7 +230,8 @@ int calcDateCount(int year, int month) {
 
 List<DateTime> calcWeekDays(DateTime dateTime) {
   int offset = dateTime.weekday - 1;
-  DateTime startTime = dateTime.subtract(Duration(days: offset));
+  DateTime start = dateTime.subtract(Duration(days: offset));
+  DateTime startTime = DateTime(start.year, start.month, start.day);
   DateTime end = startTime.add(const Duration(days: 6));
   DateTime endTime = DateTime(end.year, end.month, end.day, 23, 59, 59);
   return <DateTime>[startTime, endTime];

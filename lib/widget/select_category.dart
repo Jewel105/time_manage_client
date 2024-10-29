@@ -16,11 +16,11 @@ class SelectCategory extends StatefulWidget {
     this.categoryID = 0,
     this.onChanged,
     this.multiselect = false,
-    this.categoryIDs = const <int>[],
+    this.categories,
   });
 
   final int categoryID;
-  final List<int> categoryIDs;
+  final ValueNotifier<List<CategoryModel>>? categories;
   final void Function(int)? onChanged;
   final bool multiselect;
 
@@ -55,21 +55,24 @@ class _SelectCategoryState extends State<SelectCategory> {
   }
 
   void _checkBoxClick(TreeNode<CategoryModel> node) {
-    if (node.data?.id == null) return;
-    if (widget.categoryIDs.contains(node.data?.id)) {
-      widget.categoryIDs.remove(node.data?.id);
+    if (node.data == null || widget.categories == null) return;
+    if (widget.categories!.value.contains(node.data)) {
+      widget.categories!.value.remove(node.data);
     } else {
-      widget.categoryIDs.add(node.data?.id ?? 0);
+      widget.categories!.value.add(node.data!);
     }
     setState(() {});
   }
 
   void _confirm() {
-    if (widget.categoryIDs.isEmpty) {
+    if (widget.categories!.value.isEmpty) {
       DialogUtil.openDialog(
           content: context.locale.pleaseSelect + context.locale.category);
       return;
     }
+    List<CategoryModel> a = widget.categories!.value;
+    widget.categories!.value = <CategoryModel>[];
+    widget.categories!.value = a;
     NavCtrl.back(arguments: true);
   }
 
@@ -111,7 +114,7 @@ class _SelectCategoryState extends State<SelectCategory> {
                         trailing: widget.multiselect
                             ? IconButton(
                                 icon: Icon(
-                                    widget.categoryIDs.contains(node.data?.id)
+                                    widget.categories!.value.contains(node.data)
                                         ? Icons.check_box
                                         : Icons.check_box_outline_blank),
                                 onPressed: () {

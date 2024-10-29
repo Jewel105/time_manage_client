@@ -23,8 +23,11 @@ class _TaskState extends State<Task> {
 
   late final PageApiCall<TaskModel> pageApiCall;
 
-  int get endTimeMill =>
-      selectTime.add(const Duration(days: 1)).millisecondsSinceEpoch;
+  int get endTimeMill {
+    return DateTime(
+            selectTime.year, selectTime.month, selectTime.day, 23, 59, 59)
+        .millisecondsSinceEpoch;
+  }
 
   @override
   void initState() {

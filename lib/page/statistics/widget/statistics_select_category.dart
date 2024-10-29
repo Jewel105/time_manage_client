@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:time_manage_client/models/category_model/category_model.dart';
 import 'package:time_manage_client/utils/index.dart';
 import 'package:time_manage_client/widget/select_category.dart';
 
 class StatisticsSelectCategory extends StatefulWidget {
   const StatisticsSelectCategory({
     super.key,
-    required this.categoryIDs,
+    required this.categories,
   });
-  final List<int> categoryIDs;
+  final ValueNotifier<List<CategoryModel>> categories;
 
   @override
   State<StatisticsSelectCategory> createState() =>
@@ -25,10 +26,7 @@ class _StatisticsSelectCategoryState extends State<StatisticsSelectCategory> {
         padding: EdgeInsets.all(16.w),
         child: SelectCategory(
           multiselect: true,
-          categoryIDs: widget.categoryIDs,
-          // onChanged: (_) {
-
-          // },
+          categories: widget.categories,
         ),
       ),
     );

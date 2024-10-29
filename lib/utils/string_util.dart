@@ -45,4 +45,23 @@ class StringUtil {
     if (minutes != 0) res += '$minutes${context.locale.minute}';
     return res;
   }
+
+  /// 增加百分号,并加上正负符号
+  /// needOperate 是否需要加上正负号，默认不需要
+  static String addPercent(Object? num, {bool needOperate = false}) {
+    if (num == null) return '+0.00%';
+    if (num is! String) num = num.toString();
+    if (num.isEmpty) return '+0.00%';
+    if (isPositive(num) && needOperate) {
+      return '+${(double.parse(num) * 100).toStringAsFixed(2)}%';
+    } else {
+      return '${(double.parse(num) * 100).toStringAsFixed(2)}%';
+    }
+  }
+
+  /// 是否为正
+  static bool isPositive(String? num) {
+    if (num == null || num.isEmpty) return true;
+    return double.parse(num) >= 0;
+  }
 }
