@@ -107,8 +107,8 @@ class _ListViewWrapperState<T> extends State<ListViewWrapper<T>> {
                         child: Text(
                           context.locale.totalTip(itemCount),
                           textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            fontSize: 12,
+                          style: TextStyle(
+                            fontSize: 12.sp,
                             color: AppColor.textDarkGreyColor,
                           ),
                         ),

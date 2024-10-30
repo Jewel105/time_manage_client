@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:time_manage_client/models/category_model/category_model.dart';
+import 'package:time_manage_client/page/statistics/widget/line_widget.dart';
 import 'package:time_manage_client/page/statistics/widget/pie_widget.dart';
 import 'package:time_manage_client/page/statistics/widget/statistics_select_category.dart';
 import 'package:time_manage_client/utils/index.dart';
@@ -71,14 +72,13 @@ class _StatisticsState extends State<Statistics>
                   listenable: Listenable.merge(
                       <Listenable?>[categories, selectedDates, refreshStatus]),
                   builder: (BuildContext context, _) {
-                    print(categories.value);
-                    print(selectedDates.value);
                     return PieWidget(
                       categories: categories,
                       selectedDates: selectedDates,
                     );
                   },
                 ),
+                LineWidget()
               ],
             ),
           ),
