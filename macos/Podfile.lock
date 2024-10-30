@@ -1,0 +1,41 @@
+PODS:
+  - device_info_plus (0.0.1):
+    - FlutterMacOS
+  - flutter_localization (0.0.1):
+    - FlutterMacOS
+  - FlutterMacOS (1.0.0)
+  - package_info_plus (0.0.1):
+    - FlutterMacOS
+  - shared_preferences_foundation (0.0.1):
+    - Flutter
+    - FlutterMacOS
+
+DEPENDENCIES:
+  - device_info_plus (from `Flutter/ephemeral/.symlinks/plugins/device_info_plus/macos`)
+  - flutter_localization (from `Flutter/ephemeral/.symlinks/plugins/flutter_localization/macos`)
+  - FlutterMacOS (from `Flutter/ephemeral`)
+  - package_info_plus (from `Flutter/ephemeral/.symlinks/plugins/package_info_plus/macos`)
+  - shared_preferences_foundation (from `Flutter/ephemeral/.symlinks/plugins/shared_preferences_foundation/darwin`)
+
+EXTERNAL SOURCES:
+  device_info_plus:
+    :path: Flutter/ephemeral/.symlinks/plugins/device_info_plus/macos
+  flutter_localization:
+    :path: Flutter/ephemeral/.symlinks/plugins/flutter_localization/macos
+  FlutterMacOS:
+    :path: Flutter/ephemeral
+  package_info_plus:
+    :path: Flutter/ephemeral/.symlinks/plugins/package_info_plus/macos
+  shared_preferences_foundation:
+    :path: Flutter/ephemeral/.symlinks/plugins/shared_preferences_foundation/darwin
+
+SPEC CHECKSUMS:
+  device_info_plus: 74e614483d05c89290d30a4c8feae15d555f7427
+  flutter_localization: 4035848ae2ed142875d5fd3dde328250a5e81f42
+  FlutterMacOS: 8f6f14fa908a6fb3fba0cd85dbd81ec4b251fb24
+  package_info_plus: f5790acc797bf17c3e959e9d6cf162cc68ff7523
+  shared_preferences_foundation: fcdcbc04712aee1108ac7fda236f363274528f78
+
+PODFILE CHECKSUM: 236401fc2c932af29a9fcf0e97baeeb2d750d367
+
+COCOAPODS: 1.15.2
