@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:time_manage_client/common/app_style.dart';
 import 'package:time_manage_client/models/category_model/category_model.dart';
 import 'package:time_manage_client/page/statistics/widget/line_widget.dart';
 import 'package:time_manage_client/page/statistics/widget/pie_widget.dart';
@@ -17,7 +18,8 @@ class Statistics extends StatefulWidget {
 
 class _StatisticsState extends State<Statistics>
     with AutomaticKeepAliveClientMixin {
-  final SelectController typeController = SelectController()..code.value = 1;
+  final SelectController typeController = SelectController()
+    ..code.value = 'day';
   final ValueNotifier<List<CategoryModel>> categories =
       ValueNotifier<List<CategoryModel>>(<CategoryModel>[]);
   final ValueNotifier<List<DateTime>> selectedDates =
@@ -49,19 +51,20 @@ class _StatisticsState extends State<Statistics>
                     SelectWidget(
                       controller: typeController,
                       options: <SelectItem>[
-                        SelectItem(value: context.locale.byDay, code: 1),
-                        SelectItem(value: context.locale.byWeek, code: 2),
-                        SelectItem(value: context.locale.byMonth, code: 3),
-                        SelectItem(value: context.locale.byYear, code: 4),
+                        SelectItem(value: context.locale.byDay, code: 'day'),
+                        SelectItem(value: context.locale.byWeek, code: 'week'),
+                        SelectItem(
+                            value: context.locale.byMonth, code: 'month'),
+                        SelectItem(value: context.locale.byYear, code: 'year'),
                       ],
                     ),
                     StatisticsSelectCategory(categories: categories),
                   ],
                 ),
                 SizedBox(height: 16.h),
-                ValueListenableBuilder<int>(
+                ValueListenableBuilder<String>(
                   valueListenable: typeController.code,
-                  builder: (BuildContext context, int typeCode, _) {
+                  builder: (BuildContext context, String typeCode, _) {
                     return CustomTimePicker(
                       typeCode: typeCode,
                       selectedDates: selectedDates,
@@ -78,7 +81,26 @@ class _StatisticsState extends State<Statistics>
                     );
                   },
                 ),
-                LineWidget()
+                SizedBox(height: 16.h),
+                Text(
+                  context.locale.lineChart,
+                  style: AppStyle.h3,
+                ),
+                SizedBox(height: 16.h),
+                ListenableBuilder(
+                    listenable: Listenable.merge(
+                      <Listenable?>[
+                        categories,
+                        typeController.code,
+                        refreshStatus
+                      ],
+                    ),
+                    builder: (BuildContext context, _) {
+                      return LineWidget(
+                        categories: categories,
+                        code: typeController.code,
+                      );
+                    })
               ],
             ),
           ),

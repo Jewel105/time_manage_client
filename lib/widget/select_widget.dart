@@ -5,13 +5,13 @@ import 'package:time_manage_client/utils/index.dart';
 
 class SelectItem {
   final String? value;
-  final int code;
+  final String code;
   SelectItem({this.value, required this.code});
 }
 
 class SelectController {
-  ValueNotifier<int> code = ValueNotifier<int>(0);
-  SelectItem item = SelectItem(code: 0, value: 'Please Select');
+  ValueNotifier<String> code = ValueNotifier<String>('');
+  SelectItem item = SelectItem(code: '', value: 'Please Select');
 }
 
 class SelectWidget extends StatefulWidget {
@@ -36,7 +36,7 @@ class _SelectWidgetState extends State<SelectWidget> {
     controller = widget.controller ?? SelectController();
     controller.item = widget.options.firstWhere(
       (SelectItem item) => item.code == controller.code.value,
-      orElse: () => SelectItem(code: 0),
+      orElse: () => SelectItem(code: ''),
     );
   }
 

@@ -42,5 +42,6 @@
   "byMonth": "按月统计",
   "byYear": "按年统计",
   "pleaseSelect": "请选择",
-  "selectCategoryTip": "点击可展开子分类"
+  "selectCategoryTip": "点击可展开子分类",
+  "lineChart": "折线图"
 }

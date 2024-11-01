@@ -9,7 +9,7 @@ class CustomTimePicker extends StatefulWidget {
     required this.typeCode,
     required this.selectedDates,
   });
-  final int typeCode; // 1: 日, 2: 周, 3: 月, 4: 年
+  final String typeCode; // 1: 日, 2: 周, 3: 月, 4: 年
   final ValueNotifier<List<DateTime>> selectedDates;
   @override
   State<CustomTimePicker> createState() => _CustomTimePickerState();
@@ -43,7 +43,7 @@ class _CustomTimePickerState extends State<CustomTimePicker> {
 
   _calcRangeDate() {
     switch (widget.typeCode) {
-      case 1:
+      case 'day':
         List<DateTime> list = <DateTime>[
           DateTime(_selectedDate.year, _selectedDate.month, _selectedDate.day),
           DateTime(_selectedDate.year, _selectedDate.month, _selectedDate.day,
@@ -51,10 +51,10 @@ class _CustomTimePickerState extends State<CustomTimePicker> {
         ];
         widget.selectedDates.value = list;
         break;
-      case 2:
+      case 'week':
         widget.selectedDates.value = calcWeekDays(_selectedDate);
         break;
-      case 3:
+      case 'month':
         DateTime currentMonth =
             DateTime(_selectedDate.year, _selectedDate.month);
         DateTime nextMonth =
@@ -67,7 +67,7 @@ class _CustomTimePickerState extends State<CustomTimePicker> {
         ];
         widget.selectedDates.value = list;
         break;
-      case 4:
+      case 'year':
         DateTime currentYear = DateTime(_selectedDate.year);
         DateTime nextYear = DateTime(_selectedDate.year + 1);
         DateTime lastDayOfYear = nextYear.subtract(Duration(days: 1));
@@ -92,7 +92,7 @@ class _CustomTimePickerState extends State<CustomTimePicker> {
   _initPicker() async {
     Locale currentLocale = Localizations.localeOf(context);
     switch (widget.typeCode) {
-      case 1: // 选日
+      case 'day': // 选日
         pickerModel = DatePickerModel(
           currentTime: _selectedDate,
           minTime: DateTime.now().subtract(const Duration(days: 3650)),
@@ -102,7 +102,7 @@ class _CustomTimePickerState extends State<CustomTimePicker> {
               : LocaleType.en,
         );
         break;
-      case 2: // 周
+      case 'week': // 周
         pickerModel = WeekPicker(
           currentTime: _selectedDate,
           minTime: DateTime.now().subtract(const Duration(days: 3650)),
@@ -112,7 +112,7 @@ class _CustomTimePickerState extends State<CustomTimePicker> {
               : LocaleType.en,
         );
         break;
-      case 3: // 月
+      case 'month': // 月
         pickerModel = MonthPicker(
           currentTime: _selectedDate,
           minTime: DateTime.now().subtract(const Duration(days: 3650)),
@@ -122,7 +122,7 @@ class _CustomTimePickerState extends State<CustomTimePicker> {
               : LocaleType.en,
         );
         break;
-      case 4: // 年
+      case 'year': // 年
         pickerModel = YearPicker(
           currentTime: _selectedDate,
           minTime: DateTime.now().subtract(const Duration(days: 3650)),
@@ -189,13 +189,13 @@ class _CustomTimePickerState extends State<CustomTimePicker> {
 
   String get text {
     switch (widget.typeCode) {
-      case 1:
+      case 'day':
         return dayText;
-      case 2:
+      case 'week':
         return weekText;
-      case 3:
+      case 'month':
         return monthText;
-      case 4:
+      case 'year':
         return yearText;
       default:
         return dayText;

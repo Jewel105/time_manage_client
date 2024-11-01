@@ -49,5 +49,6 @@
   "byMonth": "By month",
   "byYear": "By year",
   "pleaseSelect": "Please select ",
-  "selectCategoryTip": "Click to expand subcategories"
+  "selectCategoryTip": "Click to expand subcategories",
+  "lineChart": "Line Chart"
 }

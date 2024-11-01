@@ -1,5 +1,6 @@
 import 'package:time_manage_client/http/dio_util.dart';
 import 'package:time_manage_client/models/category_model/category_model.dart';
+import 'package:time_manage_client/models/line_model/line_model.dart';
 import 'package:time_manage_client/models/pie_model/pie_model.dart';
 
 class StatisticApi {
@@ -21,5 +22,21 @@ class StatisticApi {
       },
     );
     return response.map((dynamic e) => PieModel.fromJson(e)).toList();
+  }
+
+  static Future<List<LineModel>> getLineValue({
+    required List<CategoryModel> categories,
+    required String timeType,
+  }) async {
+    final List<dynamic> response = await _dio.post(
+      url: '/statistic/line',
+      data: <String, Object>{
+        'categories': categories
+            .map((CategoryModel category) => category.toJson())
+            .toList(),
+        'timeType': timeType,
+      },
+    );
+    return response.map((dynamic e) => LineModel.fromJson(e)).toList();
   }
 }

@@ -1,9 +1,154 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
+import 'package:time_manage_client/api/statistic_api.dart';
+import 'package:time_manage_client/models/category_model/category_model.dart';
+import 'package:time_manage_client/models/line_model/line_model.dart';
+import 'package:time_manage_client/utils/index.dart';
 
-class LineWidget extends StatelessWidget {
-  const LineWidget({super.key});
+class LineWidget extends StatefulWidget {
+  const LineWidget({super.key, required this.categories, required this.code});
+  final ValueNotifier<List<CategoryModel>> categories;
+  final ValueNotifier<String> code;
+
+  @override
+  State<LineWidget> createState() => _LineWidgetState();
+}
+
+class _LineWidgetState extends State<LineWidget> {
+  List<LineModel> rowValue = <LineModel>[];
+  List<Color> colors = <Color>[
+    const Color(0xffA2D2FF),
+    const Color(0xffBDE0FE),
+    const Color(0xffFFC8DD),
+    const Color(0xffFFAFCC),
+    const Color(0xffCDB4DB),
+    const Color(0xffD4A5A5),
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    _updateLineData();
+  }
+
+  void _updateLineData() async {
+    rowValue = await StatisticApi.getLineValue(
+      categories: widget.categories.value,
+      timeType: widget.code.value,
+    );
+    setState(() {});
+  }
+
+  @override
+  void didUpdateWidget(LineWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _updateLineData();
+  }
+
+  List<LineChartBarData> get lineBarsData {
+    return rowValue.map((LineModel lineModel) {
+      int index = rowValue.indexOf(lineModel);
+      List<FlSpot> spots = lineModel.value
+          .map(
+            (Value value) => FlSpot(
+              value.x.toDouble(),
+              value.y.toDouble(),
+            ),
+          )
+          .toList();
+      return LineChartBarData(
+        color: colors[index % colors.length],
+        barWidth: 3.h,
+        spots: spots,
+      );
+    }).toList();
+  }
+
+  LineChartData get lineDate => LineChartData(
+        titlesData: titlesData,
+        borderData: FlBorderData(show: false),
+        lineBarsData: lineBarsData,
+        lineTouchData: LineTouchData(
+          touchTooltipData: LineTouchTooltipData(
+            getTooltipItems: (List<LineBarSpot> touchedSpots) {
+              return touchedSpots.map((LineBarSpot touchedSpot) {
+                int i = touchedSpot.barIndex;
+                String text =
+                    '${rowValue[i].categoryName}-${StringUtil.formatDuration(
+                  context,
+                  touchedSpot.y.toInt(),
+                )}';
+                return LineTooltipItem(
+                  text,
+                  TextStyle(
+                    color: touchedSpot.bar.color,
+                    fontSize: 12.sp,
+                  ),
+                );
+              }).toList();
+            },
+          ),
+        ),
+        minY: 0,
+      );
+
+  FlTitlesData get titlesData => FlTitlesData(
+        bottomTitles: AxisTitles(
+          sideTitles: SideTitles(
+            showTitles: true,
+            getTitlesWidget: bottomTitleWidgets,
+            reservedSize: 30,
+          ),
+        ),
+        leftTitles: AxisTitles(
+          sideTitles: SideTitles(
+            showTitles: true,
+            reservedSize: 40,
+            getTitlesWidget: leftTitleWidgets,
+          ),
+        ),
+        rightTitles: const AxisTitles(
+          sideTitles: SideTitles(showTitles: false),
+        ),
+        topTitles: const AxisTitles(
+          sideTitles: SideTitles(showTitles: false),
+        ),
+      );
+
+  Widget leftTitleWidgets(double value, TitleMeta meta) {
+    TextStyle style = TextStyle(
+      fontWeight: FontWeight.bold,
+      fontSize: 12.sp,
+    );
+    double hour = value / 1000 / 60 / 60;
+    return SideTitleWidget(
+      axisSide: meta.axisSide,
+      child: Text(
+        hour.toStringAsFixed(1),
+        style: style,
+      ),
+    );
+  }
+
+  Widget bottomTitleWidgets(double value, TitleMeta meta) {
+    TextStyle style = TextStyle(
+      fontWeight: FontWeight.bold,
+      fontSize: 12.sp,
+    );
+
+    DateTime date = DateTime.fromMillisecondsSinceEpoch(value.toInt());
+    String formattedDate = DateFormat('d').format(date);
+    return SideTitleWidget(
+      axisSide: meta.axisSide,
+      space: 10,
+      child: Text(
+        formattedDate,
+        style: style,
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,140 +160,4 @@ class LineWidget extends StatelessWidget {
       ),
     );
   }
-
-  LineChartData get lineDate => LineChartData(
-        titlesData: titlesData,
-        borderData: FlBorderData(show: false),
-        lineBarsData: lineBarsData1,
-      );
-
-  FlTitlesData get titlesData => FlTitlesData(
-        bottomTitles: AxisTitles(
-          sideTitles: SideTitles(
-            showTitles: true,
-            reservedSize: 32,
-            interval: 1,
-            getTitlesWidget: bottomTitleWidgets,
-          ),
-        ),
-        leftTitles: AxisTitles(
-          sideTitles: SideTitles(
-            getTitlesWidget: leftTitleWidgets,
-            showTitles: true,
-            interval: 1,
-            reservedSize: 40,
-          ),
-        ),
-        rightTitles: const AxisTitles(
-          sideTitles: SideTitles(showTitles: false),
-        ),
-        topTitles: const AxisTitles(
-          sideTitles: SideTitles(showTitles: false),
-        ),
-      );
-
-  List<LineChartBarData> get lineBarsData1 => <LineChartBarData>[
-        lineChartBarData1_1,
-        lineChartBarData1_2,
-        lineChartBarData1_3,
-      ];
-
-  Widget leftTitleWidgets(double value, TitleMeta meta) {
-    const TextStyle style = TextStyle(
-      fontWeight: FontWeight.bold,
-      fontSize: 14,
-    );
-
-    return SideTitleWidget(
-      axisSide: meta.axisSide,
-      space: 10,
-      child: Text(
-        value.toInt().toString(),
-        style: style,
-      ),
-    );
-  }
-
-  Widget bottomTitleWidgets(double value, TitleMeta meta) {
-    const TextStyle style = TextStyle(
-      fontWeight: FontWeight.bold,
-      fontSize: 16,
-    );
-
-    return SideTitleWidget(
-      axisSide: meta.axisSide,
-      space: 10,
-      child: Text(
-        value.toInt().toString(),
-        style: style,
-      ),
-    );
-  }
-
-  FlGridData get gridData => const FlGridData(show: false);
-
-  LineChartBarData get lineChartBarData1_1 => LineChartBarData(
-        color: Colors.amber,
-        barWidth: 3.h,
-        spots: const <FlSpot>[
-          FlSpot(1, 1),
-          FlSpot(3, 1.5),
-          FlSpot(5, 1.4),
-          FlSpot(7, 3.4),
-          FlSpot(10, 2),
-          FlSpot(12, 2.2),
-          FlSpot(13, 1.8),
-        ],
-      );
-
-  LineChartBarData get lineChartBarData1_2 => LineChartBarData(
-        // isCurved: true,
-        color: Colors.pink,
-        barWidth: 3.h,
-        // isStrokeCapRound: true,
-        // dotData: const FlDotData(show: false),
-        // belowBarData: BarAreaData(
-        //   show: false,
-        //   color: Colors.pink.withOpacity(0),
-        // ),
-        spots: const <FlSpot>[
-          FlSpot(1, 1),
-          FlSpot(3, 2.8),
-          FlSpot(7, 1.2),
-          FlSpot(10, 2.8),
-          FlSpot(12, 2.6),
-          FlSpot(13, 3.9),
-        ],
-      );
-
-  LineChartBarData get lineChartBarData1_3 => LineChartBarData(
-        isCurved: true,
-        color: Colors.grey,
-        barWidth: 8,
-        isStrokeCapRound: true,
-        dotData: const FlDotData(show: false),
-        belowBarData: BarAreaData(show: false),
-        spots: const <FlSpot>[
-          FlSpot(1, 2.8),
-          FlSpot(3, 1.9),
-          FlSpot(6, 3),
-          FlSpot(10, 1.3),
-          FlSpot(13, 2.5),
-        ],
-      );
-  LineChartBarData get lineChartBarData1_4 => LineChartBarData(
-        isCurved: true,
-        color: Colors.grey,
-        barWidth: 8,
-        isStrokeCapRound: true,
-        dotData: const FlDotData(show: false),
-        belowBarData: BarAreaData(show: false),
-        spots: const <FlSpot>[
-          FlSpot(2, 2.8),
-          FlSpot(3, 1),
-          FlSpot(6, 2),
-          FlSpot(1, 1.3),
-          FlSpot(4, 2.5),
-        ],
-      );
 }
