@@ -44,7 +44,6 @@ class _LineWidgetState extends State<LineWidget> {
         intervalY = 1000 * 60 * 60 * 4;
         intervalX = 1000 * 60 * 60 * 24;
         reservedSizeY = 22;
-
         formatX = DateFormat('dd');
         break;
       case 'week':
@@ -147,7 +146,7 @@ class _LineWidgetState extends State<LineWidget> {
           sideTitles: SideTitles(
             showTitles: true,
             interval: intervalY,
-            reservedSize: 40,
+            reservedSize: reservedSizeY,
             getTitlesWidget: leftTitleWidgets,
           ),
         ),
