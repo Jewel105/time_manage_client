@@ -17,4 +17,21 @@ class AppColor {
   static const Color textSuccessColor = Color(0xfF4BC351);
   static const Color textErrorColor = Color(0xfFB33434);
   static const Color textWarnColor = Color(0xfF9A7D13);
+
+  static const List<Color> colors = <Color>[
+    Color(0xff1E88E5),
+    Color.fromARGB(255, 224, 157, 0),
+    Color(0xffE53935),
+    Color(0xff43A047),
+    Color(0xff8E24AA),
+    Color.fromARGB(255, 163, 140, 83),
+    Color(0xff00ACC1),
+    Color(0xffFF6F61),
+    Color(0xFFD56B00),
+    Color(0xff5D4037),
+    Color(0xff1976D2),
+    Color(0xff7B1FA2),
+    Color(0xffC2185B),
+    Color(0xFFC57723),
+  ];
 }

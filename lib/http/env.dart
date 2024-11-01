@@ -47,6 +47,6 @@ class Env {
   // 生产环境，http2证书
   static final EnvConfig _proConfig = EnvConfig(
     envName: 'production',
-    envHttpUrl: 'https://8.137.51.66:8081/api/v1',
+    envHttpUrl: 'https://8.137.51.56:8081/api/v1',
   );
 }

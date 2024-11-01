@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:time_manage_client/api/statistic_api.dart';
+import 'package:time_manage_client/common/app_color.dart';
 import 'package:time_manage_client/models/category_model/category_model.dart';
 import 'package:time_manage_client/models/line_model/line_model.dart';
 import 'package:time_manage_client/utils/index.dart';
@@ -18,19 +19,58 @@ class LineWidget extends StatefulWidget {
 
 class _LineWidgetState extends State<LineWidget> {
   List<LineModel> rowValue = <LineModel>[];
-  List<Color> colors = <Color>[
-    const Color(0xffA2D2FF),
-    const Color(0xffBDE0FE),
-    const Color(0xffFFC8DD),
-    const Color(0xffFFAFCC),
-    const Color(0xffCDB4DB),
-    const Color(0xffD4A5A5),
-  ];
+  double intervalX = 0;
+  double intervalY = 0;
+  double reservedSizeY = 22;
+  DateFormat formatX = DateFormat('dd');
 
   @override
   void initState() {
     super.initState();
+    initData();
     _updateLineData();
+  }
+
+  @override
+  void didUpdateWidget(LineWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _updateLineData();
+    initData();
+  }
+
+  initData() {
+    switch (widget.code.value) {
+      case 'day':
+        intervalY = 1000 * 60 * 60 * 4;
+        intervalX = 1000 * 60 * 60 * 24;
+        reservedSizeY = 22;
+
+        formatX = DateFormat('dd');
+        break;
+      case 'week':
+        intervalY = 1000 * 60 * 60 * 10;
+        intervalX = 1000 * 60 * 60 * 24 * 7;
+        reservedSizeY = 30;
+        formatX = DateFormat('dd');
+        break;
+      case 'month':
+        intervalY = 1000 * 60 * 60 * 50;
+        intervalX = 1000 * 60 * 60 * 24 * 30;
+        reservedSizeY = 40;
+        formatX = DateFormat('M');
+        break;
+      case 'year':
+        reservedSizeY = 50;
+        intervalY = 1000 * 60 * 60 * 100;
+        intervalX = 1000 * 60 * 60 * 24 * 365;
+        formatX = DateFormat('yy');
+        break;
+      default:
+        intervalY = 1000 * 60 * 60 * 3;
+        intervalX = 1000 * 60 * 60 * 24;
+        formatX = DateFormat('dd');
+        break;
+    }
   }
 
   void _updateLineData() async {
@@ -41,25 +81,16 @@ class _LineWidgetState extends State<LineWidget> {
     setState(() {});
   }
 
-  @override
-  void didUpdateWidget(LineWidget oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    _updateLineData();
-  }
-
   List<LineChartBarData> get lineBarsData {
     return rowValue.map((LineModel lineModel) {
-      int index = rowValue.indexOf(lineModel);
-      List<FlSpot> spots = lineModel.value
-          .map(
-            (Value value) => FlSpot(
-              value.x.toDouble(),
-              value.y.toDouble(),
-            ),
-          )
-          .toList();
+      List<FlSpot> spots = lineModel.value.map((Value value) {
+        return FlSpot(
+          value.x.toDouble(),
+          value.y.toDouble(),
+        );
+      }).toList();
       return LineChartBarData(
-        color: colors[index % colors.length],
+        color: AppColor.colors[lineModel.categoryID % AppColor.colors.length],
         barWidth: 3.h,
         spots: spots,
       );
@@ -67,44 +98,55 @@ class _LineWidgetState extends State<LineWidget> {
   }
 
   LineChartData get lineDate => LineChartData(
+        gridData: const FlGridData(show: false),
         titlesData: titlesData,
         borderData: FlBorderData(show: false),
         lineBarsData: lineBarsData,
-        lineTouchData: LineTouchData(
-          touchTooltipData: LineTouchTooltipData(
-            getTooltipItems: (List<LineBarSpot> touchedSpots) {
-              return touchedSpots.map((LineBarSpot touchedSpot) {
-                int i = touchedSpot.barIndex;
-                String text =
-                    '${rowValue[i].categoryName}-${StringUtil.formatDuration(
-                  context,
-                  touchedSpot.y.toInt(),
-                )}';
-                return LineTooltipItem(
-                  text,
-                  TextStyle(
-                    color: touchedSpot.bar.color,
-                    fontSize: 12.sp,
-                  ),
-                );
-              }).toList();
-            },
-          ),
-        ),
+        lineTouchData: lineTouchData,
         minY: 0,
+        minX: rowValue.isNotEmpty ? rowValue.first.value.last.x.toDouble() : 0,
       );
+
+  LineTouchData get lineTouchData {
+    return LineTouchData(
+      touchTooltipData: LineTouchTooltipData(
+        getTooltipColor: (_) => const Color.fromARGB(255, 231, 231, 231),
+        getTooltipItems: (List<LineBarSpot> touchedSpots) {
+          return touchedSpots.map((LineBarSpot touchedSpot) {
+            if (touchedSpot.y == 0) return null;
+            int i = touchedSpot.barIndex;
+            String text =
+                '${rowValue[i].categoryName}:${StringUtil.formatDuration(
+              context,
+              touchedSpot.y.toInt(),
+            )}';
+            return LineTooltipItem(
+              text,
+              TextStyle(
+                color: touchedSpot.bar.color,
+                fontSize: 12.sp,
+              ),
+            );
+          }).toList();
+        },
+      ),
+    );
+  }
 
   FlTitlesData get titlesData => FlTitlesData(
         bottomTitles: AxisTitles(
           sideTitles: SideTitles(
+            interval: intervalX,
             showTitles: true,
             getTitlesWidget: bottomTitleWidgets,
             reservedSize: 30,
+            minIncluded: false,
           ),
         ),
         leftTitles: AxisTitles(
           sideTitles: SideTitles(
             showTitles: true,
+            interval: intervalY,
             reservedSize: 40,
             getTitlesWidget: leftTitleWidgets,
           ),
@@ -119,14 +161,14 @@ class _LineWidgetState extends State<LineWidget> {
 
   Widget leftTitleWidgets(double value, TitleMeta meta) {
     TextStyle style = TextStyle(
-      fontWeight: FontWeight.bold,
+      fontWeight: FontWeight.w500,
       fontSize: 12.sp,
     );
     double hour = value / 1000 / 60 / 60;
     return SideTitleWidget(
       axisSide: meta.axisSide,
       child: Text(
-        hour.toStringAsFixed(1),
+        hour.toStringAsFixed(0),
         style: style,
       ),
     );
@@ -134,15 +176,21 @@ class _LineWidgetState extends State<LineWidget> {
 
   Widget bottomTitleWidgets(double value, TitleMeta meta) {
     TextStyle style = TextStyle(
-      fontWeight: FontWeight.bold,
+      fontWeight: FontWeight.w500,
       fontSize: 12.sp,
     );
 
     DateTime date = DateTime.fromMillisecondsSinceEpoch(value.toInt());
-    String formattedDate = DateFormat('d').format(date);
+    String formattedDate = formatX.format(date);
     return SideTitleWidget(
       axisSide: meta.axisSide,
-      space: 10,
+      space: 12,
+      fitInside: SideTitleFitInsideData(
+        enabled: true,
+        distanceFromEdge: 5.w,
+        parentAxisSize: 0,
+        axisPosition: 0,
+      ),
       child: Text(
         formattedDate,
         style: style,
@@ -153,10 +201,13 @@ class _LineWidgetState extends State<LineWidget> {
   @override
   Widget build(BuildContext context) {
     return AspectRatio(
-      aspectRatio: 1.5,
-      child: LineChart(
-        lineDate,
-        duration: const Duration(milliseconds: 250),
+      aspectRatio: 1.8,
+      child: Padding(
+        padding: EdgeInsets.only(right: 8.w),
+        child: LineChart(
+          lineDate,
+          duration: const Duration(milliseconds: 250),
+        ),
       ),
     );
   }

@@ -21,14 +21,6 @@ class PieWidgetState extends State<PieWidget> {
   int touchedIndex = -1;
   List<PieModel> rowValue = <PieModel>[];
   int totalValue = 1;
-  List<Color> colors = <Color>[
-    const Color(0xffA2D2FF),
-    const Color(0xffBDE0FE),
-    const Color(0xffFFC8DD),
-    const Color(0xffFFAFCC),
-    const Color(0xffCDB4DB),
-    const Color(0xffD4A5A5),
-  ];
 
   @override
   void initState() {
@@ -64,7 +56,7 @@ class PieWidgetState extends State<PieWidget> {
       ];
       String percent = StringUtil.addPercent(pieModel.value / totalValue);
       return PieChartSectionData(
-        color: colors[index % colors.length],
+        color: AppColor.colors[pieModel.categoryID % AppColor.colors.length],
         value: pieModel.value.toDouble(),
         title:
             '${pieModel.categoryName}\n${StringUtil.formatDuration(context, pieModel.value)}',

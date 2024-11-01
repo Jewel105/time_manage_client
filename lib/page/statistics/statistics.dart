@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:time_manage_client/common/app_style.dart';
 import 'package:time_manage_client/models/category_model/category_model.dart';
 import 'package:time_manage_client/page/statistics/widget/line_widget.dart';
 import 'package:time_manage_client/page/statistics/widget/pie_widget.dart';
@@ -81,12 +80,7 @@ class _StatisticsState extends State<Statistics>
                     );
                   },
                 ),
-                SizedBox(height: 16.h),
-                Text(
-                  context.locale.lineChart,
-                  style: AppStyle.h3,
-                ),
-                SizedBox(height: 16.h),
+                SizedBox(height: 48.h),
                 ListenableBuilder(
                     listenable: Listenable.merge(
                       <Listenable?>[
