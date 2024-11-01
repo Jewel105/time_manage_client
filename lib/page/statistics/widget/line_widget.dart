@@ -144,11 +144,11 @@ class _LineWidgetState extends State<LineWidget> {
         ),
         leftTitles: AxisTitles(
           sideTitles: SideTitles(
-            showTitles: true,
-            interval: intervalY,
-            reservedSize: reservedSizeY,
-            getTitlesWidget: leftTitleWidgets,
-          ),
+              showTitles: true,
+              interval: intervalY,
+              reservedSize: reservedSizeY,
+              getTitlesWidget: leftTitleWidgets,
+              maxIncluded: false),
         ),
         rightTitles: const AxisTitles(
           sideTitles: SideTitles(showTitles: false),
