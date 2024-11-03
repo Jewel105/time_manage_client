@@ -50,7 +50,7 @@ deal_vsersion(){
 publish_uat_android(){
   echo "上传apk到UAT环境"
 
-  response=$(curl --progress-bar -X POST "$loadly_url" \
+  response=$(curl -k --progress-bar -X POST "$loadly_url" \
     -F "_api_key=00c267ec2a9938e29636ea58719af9f7" \
     -F "file=@$apk_file_path")
 
@@ -60,7 +60,7 @@ publish_uat_android(){
 publish_uat_ios(){
   echo "上传iOS到UAT环境"
   
- response=$(curl --progress-bar -X POST "$loadly_url" \
+ response=$(curl -k --progress-bar -X POST "$loadly_url" \
     -F "_api_key=00c267ec2a9938e29636ea58719af9f7" \
     -F "file=@$ipa_file_path")
 
