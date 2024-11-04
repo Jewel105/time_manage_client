@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:time_manage_client/common/app_color.dart';
 
 typedef FnCallBack = void Function();
 
@@ -20,7 +19,7 @@ class MainButton extends StatelessWidget {
     required this.text,
     this.textStyle,
     this.preIcon,
-    this.bgColor = AppColor.appMainColor,
+    this.bgColor,
     this.onPressed,
     this.height,
     this.width,
@@ -61,7 +60,6 @@ class MainButton extends StatelessWidget {
               TextStyle(
                 fontSize: fontSize ?? 14.sp,
                 fontWeight: FontWeight.w600,
-                color: AppColor.textDarkGreyColor,
               ),
         ),
       ),

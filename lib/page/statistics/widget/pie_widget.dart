@@ -64,7 +64,6 @@ class PieWidgetState extends State<PieWidget> {
         titleStyle: TextStyle(
           fontSize: fontSize,
           fontWeight: FontWeight.w500,
-          color: AppColor.textBlackColor,
           shadows: shadows,
         ),
         badgeWidget: Text(

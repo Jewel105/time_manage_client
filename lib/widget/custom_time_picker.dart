@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart'
+    as datat_time_picker;
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 import 'package:intl/intl.dart';
 import 'package:time_manage_client/utils/index.dart';
@@ -28,7 +30,6 @@ class _CustomTimePickerState extends State<CustomTimePicker> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    print("didChangeDependencies");
     _initPicker();
   }
 
@@ -149,6 +150,14 @@ class _CustomTimePickerState extends State<CustomTimePicker> {
     DateTime? d = await DatePicker.showPicker(
       context,
       pickerModel: pickerModel,
+      theme: datat_time_picker.DatePickerTheme(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        cancelStyle:
+            TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color),
+        doneStyle: TextStyle(color: Theme.of(context).primaryColor),
+        itemStyle:
+            TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color),
+      ),
     );
     if (d != null) {
       _selectedDate = d;

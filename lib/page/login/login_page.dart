@@ -3,7 +3,6 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:time_manage_client/api/common_api.dart';
-import 'package:time_manage_client/common/app_color.dart';
 import 'package:time_manage_client/common/constant.dart';
 import 'package:time_manage_client/router/nav_ctrl.dart';
 import 'package:time_manage_client/router/routes.dart';
@@ -78,7 +77,6 @@ class _LoginPageState extends State<LoginPage> {
               ),
               SizedBox(height: 16.w),
               MainButton(
-                bgColor: AppColor.bgGreyColor,
                 width: double.infinity,
                 text: context.locale.register,
                 onPressed: _toRegister,

@@ -86,7 +86,6 @@ class DialogUtil {
                             child: Expanded(
                               child: MainButton(
                                 text: cancelText ?? 'Cancel',
-                                bgColor: AppColor.bgGreyColor,
                                 onPressed: () {
                                   NavCtrl.back(arguments: false);
                                 },
@@ -121,7 +120,7 @@ class DialogUtil {
       backgroundColor: AppColor.bgMask,
       toastBuilder: (CancelFunc cancel) {
         return SpinKitSpinningLines(
-          color: AppColor.appMainColor,
+          color: AppColor.mainDarkColor,
           lineWidth: 8.w,
           itemCount: 3,
         );

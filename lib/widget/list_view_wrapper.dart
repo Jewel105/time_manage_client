@@ -85,7 +85,7 @@ class _ListViewWrapperState<T> extends State<ListViewWrapper<T>> {
                     return widget.skeleton;
                   }
                   return SpinKitThreeInOut(
-                    color: AppColor.appMainColor,
+                    color: AppColor.mainDarkColor,
                     size: 20.w,
                   );
                 } else if (itemCount == 0) {
@@ -109,7 +109,6 @@ class _ListViewWrapperState<T> extends State<ListViewWrapper<T>> {
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 12.sp,
-                            color: AppColor.textDarkGreyColor,
                           ),
                         ),
                       );

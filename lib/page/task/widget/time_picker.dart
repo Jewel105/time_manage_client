@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart'
+    as datat_time_picker;
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 import 'package:intl/intl.dart';
 import 'package:time_manage_client/common/app_style.dart';
@@ -43,6 +45,14 @@ class _TimePickerState extends State<TimePicker> {
       currentTime: currentTime,
       minTime: today.subtract(const Duration(days: 365)),
       maxTime: today,
+      theme: datat_time_picker.DatePickerTheme(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        cancelStyle:
+            TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color),
+        doneStyle: TextStyle(color: Theme.of(context).primaryColor),
+        itemStyle:
+            TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color),
+      ),
       locale:
           currentLocale.languageCode == 'zh' ? LocaleType.zh : LocaleType.en,
     );

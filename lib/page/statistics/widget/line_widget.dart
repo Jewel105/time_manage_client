@@ -109,7 +109,8 @@ class _LineWidgetState extends State<LineWidget> {
   LineTouchData get lineTouchData {
     return LineTouchData(
       touchTooltipData: LineTouchTooltipData(
-        getTooltipColor: (_) => const Color.fromARGB(255, 231, 231, 231),
+        getTooltipColor: (_) =>
+            Theme.of(context).scaffoldBackgroundColor.withOpacity(0.9),
         getTooltipItems: (List<LineBarSpot> touchedSpots) {
           return touchedSpots.map((LineBarSpot touchedSpot) {
             if (touchedSpot.y == 0) return null;

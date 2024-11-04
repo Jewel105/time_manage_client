@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:time_manage_client/api/task_api.dart';
-import 'package:time_manage_client/common/app_color.dart';
 import 'package:time_manage_client/common/app_style.dart';
 import 'package:time_manage_client/models/task_model/task_model.dart';
 import 'package:time_manage_client/router/nav_ctrl.dart';
@@ -142,7 +141,6 @@ class _TaskState extends State<Task> with AutomaticKeepAliveClientMixin {
                       iconSize: 24.w,
                       icon: const Icon(
                         Icons.delete_outline,
-                        color: AppColor.textErrorColor,
                       ),
                       onPressed: () {
                         _deleteTask(item.id);

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
 class AppColor {
-  static const Color appMainColor = Color(0xff084D68);
+  // static const Color appMainColor = Color(0xff084D68);
   static const Color mainDarkColor = Color(0xff084D68);
-  static const Color mainLightColor = Color(0xffF6FCFE);
+  static const Color mainLightColor = Color.fromARGB(255, 204, 229, 237);
 
   static const Color bgWhiteColor = Color(0xffFFFFFF);
+  static const Color bgBlackColor = Color(0xFF0C0C0C);
   static const Color bgGreyColor = Color(0xffF2F2F2);
   static const Color bgMask = Color.fromRGBO(0, 0, 0, 0.424); // 遮罩层
   static const Color bgError = Color.fromARGB(108, 255, 135, 135); // 遮罩层
@@ -17,7 +18,9 @@ class AppColor {
   static const Color textDarkGreyColor = Color(0xff323232);
   static const Color textBlackColor = Color.fromARGB(255, 0, 0, 0);
   static const Color textSuccessColor = Color(0xfF4BC351);
-  static const Color textErrorColor = Color(0xfFB33434);
+  static const Color textErrorDarkColor = Color(0xfFB33434);
+  static const Color textErrorLightColor = Color(0xFFFFA6A6);
+
   static const Color textWarnColor = Color(0xfF9A7D13);
 
   static const List<Color> colors = <Color>[
