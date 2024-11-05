@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:time_manage_client/common/constant.dart';
 import 'package:time_manage_client/models/category_model/category_model.dart';
 import 'package:time_manage_client/page/statistics/widget/line_widget.dart';
 import 'package:time_manage_client/page/statistics/widget/pie_widget.dart';
@@ -24,6 +25,16 @@ class _StatisticsState extends State<Statistics>
   final ValueNotifier<List<DateTime>> selectedDates =
       ValueNotifier<List<DateTime>>(<DateTime>[]);
   final ValueNotifier<bool> refreshStatus = ValueNotifier<bool>(false);
+
+  @override
+  void initState() {
+    super.initState();
+    List<dynamic> localCategories =
+        StorageUtil.get(Constant.CATEGORY) ?? <dynamic>[];
+    categories.value =
+        localCategories.map((dynamic e) => CategoryModel.fromJson(e)).toList();
+  }
+
   Future<void> _refresh() async {
     refreshStatus.value = !refreshStatus.value;
   }

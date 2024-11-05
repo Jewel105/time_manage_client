@@ -43,5 +43,6 @@
   "byYear": "按年统计",
   "pleaseSelect": "请选择",
   "selectCategoryTip": "点击可展开子分类",
-  "lineChart": "折线图"
+  "lineChart": "折线图",
+  "confirmDefault": "确认并默认"
 }

@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:animated_tree_view/tree_view/tree_node.dart';
 import 'package:animated_tree_view/tree_view/tree_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:time_manage_client/api/category_api.dart';
 import 'package:time_manage_client/common/app_style.dart';
+import 'package:time_manage_client/common/constant.dart';
 import 'package:time_manage_client/models/category_model/category_model.dart';
 import 'package:time_manage_client/router/nav_ctrl.dart';
 import 'package:time_manage_client/utils/index.dart';
@@ -62,6 +65,17 @@ class _SelectCategoryState extends State<SelectCategory> {
       widget.categories!.value.add(node.data!);
     }
     setState(() {});
+  }
+
+  void _confirmDefault() async {
+    if (widget.categories!.value.isEmpty) {
+      DialogUtil.openDialog(
+          content: context.locale.pleaseSelect + context.locale.category);
+      return;
+    }
+    await StorageUtil.set(
+        Constant.CATEGORY, json.encode(widget.categories!.value));
+    _confirm();
   }
 
   void _confirm() {
@@ -129,11 +143,21 @@ class _SelectCategoryState extends State<SelectCategory> {
                 ),
               ),
         if (widget.multiselect)
-          MainButton(
-            width: double.infinity,
-            text: context.locale.confirm,
-            onPressed: _confirm,
-          )
+          Column(
+            children: [
+              MainButton(
+                width: double.infinity,
+                text: context.locale.confirm,
+                onPressed: _confirm,
+              ),
+              SizedBox(height: 8.w),
+              MainButton(
+                width: double.infinity,
+                text: context.locale.confirmDefault,
+                onPressed: _confirmDefault,
+              )
+            ],
+          ),
       ],
     );
   }

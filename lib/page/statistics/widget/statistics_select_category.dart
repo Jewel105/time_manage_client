@@ -22,6 +22,7 @@ class _StatisticsSelectCategoryState extends State<StatisticsSelectCategory> {
       context: context,
       isScrollControlled: true,
       useSafeArea: true,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       builder: (BuildContext context) => Padding(
         padding: EdgeInsets.all(16.w),
         child: SelectCategory(

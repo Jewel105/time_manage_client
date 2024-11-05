@@ -50,5 +50,6 @@
   "byYear": "By year",
   "pleaseSelect": "Please select ",
   "selectCategoryTip": "Click to expand subcategories",
-  "lineChart": "Line Chart"
+  "lineChart": "Line Chart",
+  "confirmDefault":"Confirm and default"
 }

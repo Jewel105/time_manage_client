@@ -12,17 +12,17 @@ class StorageUtil {
 
   // 设置本地缓存
   static Future<void> set<T>(String key, T value) {
-    if (T == String) {
+    if (value is String) {
       return _preferences.setString(key, value as String);
-    } else if (T == int) {
+    } else if (value is int) {
       return _preferences.setInt(key, value as int);
-    } else if (T == bool) {
+    } else if (value is bool) {
       return _preferences.setBool(key, value as bool);
-    } else if (T == double) {
+    } else if (value is double) {
       return _preferences.setDouble(key, value as double);
-    } else if (T == List<String>) {
+    } else if (value is List<String>) {
       return _preferences.setStringList(key, value as List<String>);
-    } else if (T == Map<String, dynamic>) {
+    } else if (value is Map<String, dynamic>) {
       return _preferences.setString(key, json.encode(value));
     } else {
       return Future<void>.value();
