@@ -67,7 +67,7 @@ class MyApp extends StatelessWidget {
             title: 'TIME',
             theme: appLightTheme,
             darkTheme: appDarkTheme,
-            themeMode: ThemeMode.system,
+            themeMode: ThemeMode.dark,
             onGenerateRoute: CreateRoutes.generateRoute,
             navigatorKey: navigatorKey,
             localizationsDelegates: const <LocalizationsDelegate<Object?>>[

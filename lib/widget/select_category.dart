@@ -121,7 +121,7 @@ class _SelectCategoryState extends State<SelectCategory> {
                       (BuildContext context, TreeNode<CategoryModel> node) {
                     return Container(
                       color: widget.categoryID == node.data?.id
-                          ? Colors.amber
+                          ? Theme.of(context).primaryColorLight
                           : null,
                       child: ListTile(
                         title: Text('${node.data?.name}'),
