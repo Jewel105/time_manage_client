@@ -33,7 +33,7 @@ class _TaskState extends State<Task> with AutomaticKeepAliveClientMixin {
     super.initState();
     selectTime = DateTime(today.year, today.month, today.day);
     pageApiCall = PageApiCall<TaskModel>(
-      apiCall: TaskApi.getCategories,
+      apiCall: TaskApi.getTasks,
       params: <String, dynamic>{
         'startTime': selectTime.millisecondsSinceEpoch,
         'endTime': endTimeMill,
@@ -58,7 +58,7 @@ class _TaskState extends State<Task> with AutomaticKeepAliveClientMixin {
     setState(() {});
   }
 
-  void _saveTask({required TaskModel task}) async {
+  void _saveTask(TaskModel task) async {
     bool? res = await NavCtrl.push(Routes.saveTask, arguments: task);
     if (res == true) {
       pageApiCall.refresh();
@@ -72,7 +72,7 @@ class _TaskState extends State<Task> with AutomaticKeepAliveClientMixin {
 
   void _deleteTask(int id) async {
     await TaskApi.deleteTask(id);
-    pageApiCall.refresh();
+    pageApiCall.items.removeWhere((TaskModel item) => item.id == id);
     setState(() {});
   }
 
@@ -85,7 +85,7 @@ class _TaskState extends State<Task> with AutomaticKeepAliveClientMixin {
         actions: <Widget>[
           IconButton(
             onPressed: () {
-              _saveTask(task: TaskModel.emptyInstance());
+              _saveTask(TaskModel.emptyInstance());
             },
             icon: const Icon(Icons.add_circle_outline),
             iconSize: 24.w,
@@ -99,55 +99,11 @@ class _TaskState extends State<Task> with AutomaticKeepAliveClientMixin {
           Expanded(
               child: ListViewWrapper<TaskModel>(
             itemBuilder: (BuildContext context, TaskModel item) {
-              return ListTile(
-                title: Text(
-                  item.categories.replaceAll(',', '-'),
-                  style: AppStyle.h3,
-                ),
-                subtitle: Text(item.description),
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: <Widget>[
-                        Text(
-                          StringUtil.formatDuration(context, item.spentTime),
-                          style: AppStyle.h3,
-                        ),
-                        Text(
-                          '${StringUtil.dateTimeFormat(
-                            context,
-                            time: item.startTime,
-                            format: DateFormat.Hm,
-                          )}-${StringUtil.dateTimeFormat(
-                            context,
-                            time: item.endTime,
-                            format: DateFormat.Hm,
-                          )}',
-                          style: AppStyle.tip,
-                        ),
-                      ],
-                    ),
-                    IconButton(
-                      iconSize: 24.w,
-                      icon: const Icon(Icons.edit_outlined),
-                      onPressed: () {
-                        _saveTask(task: item);
-                      },
-                    ),
-                    IconButton(
-                      iconSize: 24.w,
-                      icon: const Icon(
-                        Icons.delete_outline,
-                      ),
-                      onPressed: () {
-                        _deleteTask(item.id);
-                      },
-                    ),
-                  ],
-                ),
+              return TaskItem(
+                key: ValueKey<int>(item.id),
+                item: item,
+                onEdit: _saveTask,
+                onDelete: _deleteTask,
               );
             },
             pageApiCall: pageApiCall,
@@ -181,4 +137,70 @@ class _TaskState extends State<Task> with AutomaticKeepAliveClientMixin {
 
   @override
   bool get wantKeepAlive => true;
+}
+
+class TaskItem extends StatelessWidget {
+  const TaskItem({
+    super.key,
+    required this.item,
+    this.onEdit,
+    this.onDelete,
+  });
+  final TaskModel item;
+  final void Function(TaskModel)? onEdit;
+  final void Function(int)? onDelete;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: Text(
+        item.categories.replaceAll(',', '-'),
+        style: AppStyle.h3,
+      ),
+      subtitle: Text(item.description),
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: <Widget>[
+              Text(
+                StringUtil.formatDuration(context, item.spentTime),
+                style: AppStyle.h3,
+              ),
+              Text(
+                '${StringUtil.dateTimeFormat(
+                  context,
+                  time: item.startTime,
+                  format: DateFormat.Hm,
+                )}-${StringUtil.dateTimeFormat(
+                  context,
+                  time: item.endTime,
+                  format: DateFormat.Hm,
+                )}',
+                style: AppStyle.tip,
+              ),
+            ],
+          ),
+          IconButton(
+            iconSize: 24.w,
+            icon: const Icon(Icons.edit_outlined),
+            onPressed: () {
+              onEdit?.call(item);
+            },
+          ),
+          IconButton(
+            iconSize: 24.w,
+            icon: const Icon(
+              Icons.delete_outline,
+            ),
+            onPressed: () {
+              onDelete?.call(item.id);
+            },
+          ),
+        ],
+      ),
+    );
+  }
 }
