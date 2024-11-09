@@ -54,7 +54,7 @@ class MainButton extends StatelessWidget {
             : () {
                 FocusManager.instance.primaryFocus?.unfocus();
                 EasyThrottle.throttle(
-                  'button-throttle',
+                  'button-throttle-$text',
                   const Duration(milliseconds: 1000),
                   () => onPressed?.call(),
                 );
