@@ -1,3 +1,4 @@
+import 'package:easy_debounce/easy_throttle.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -78,7 +79,9 @@ class _ListViewWrapperState<T> extends State<ListViewWrapper<T>> {
             itemBuilder: (BuildContext context, int index) {
               if (index == itemCount) {
                 if (widget.pageApiCall.hasMore) {
-                  widget.pageApiCall.loadMore().then((_) {
+                  EasyThrottle.throttle('list-loadMore', Durations.long4,
+                      () async {
+                    await widget.pageApiCall.loadMore();
                     setState(() {});
                   });
                   if (itemCount == 0 && widget.skeleton != null) {
