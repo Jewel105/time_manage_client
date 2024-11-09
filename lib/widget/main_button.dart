@@ -1,3 +1,4 @@
+import 'package:easy_debounce/easy_throttle.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -52,7 +53,11 @@ class MainButton extends StatelessWidget {
             ? null
             : () {
                 FocusManager.instance.primaryFocus?.unfocus();
-                onPressed?.call();
+                EasyThrottle.throttle(
+                  'button-throttle',
+                  const Duration(milliseconds: 1000),
+                  () => onPressed?.call(),
+                );
               },
         child: Text(
           text,

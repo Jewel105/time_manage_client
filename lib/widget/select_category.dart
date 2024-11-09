@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:animated_tree_view/tree_view/tree_node.dart';
 import 'package:animated_tree_view/tree_view/tree_view.dart';
+import 'package:easy_debounce/easy_throttle.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:time_manage_client/api/category_api.dart';
@@ -139,7 +140,13 @@ class _SelectCategoryState extends State<SelectCategory> {
                       ),
                     );
                   },
-                  onItemTap: getCategories,
+                  onItemTap: (TreeNode<CategoryModel> node) {
+                    EasyThrottle.throttle(
+                      'button-throttle',
+                      const Duration(milliseconds: 1000),
+                      () => getCategories(node),
+                    );
+                  },
                 ),
               ),
         if (widget.multiselect)
