@@ -1,5 +1,7 @@
+import 'dart:convert';
 import 'dart:io';
 
+import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart';
 import 'package:dio/io.dart';
 import 'package:dio_http2_adapter/dio_http2_adapter.dart';
@@ -26,6 +28,11 @@ class DioUtil {
   static const Duration _receiveTime = Duration(seconds: 60);
   // 请求url前缀
   static final String _baseUrl = Env.envConfig.envHttpUrl;
+
+  // 运行访问的证书sha256
+  List<String> allowedSHAFingerprints = <String>[
+    'c30c75dd28c3d0174d3f2eb6367a34138ab95f8fb69df8c956dac0969c618c42',
+  ];
 
   // 单例模式
   static DioUtil? _instance;
@@ -57,7 +64,14 @@ class DioUtil {
         ConnectionManager(
             idleTimeout: _receiveTime,
             onClientCreate: (_, ClientSetting config) {
-              config.onBadCertificate = (X509Certificate cert) => true;
+              config.onBadCertificate = (X509Certificate cert) {
+                String serverCertSha256 = getCertSHA256Fingerprint(cert);
+                if (allowedSHAFingerprints.contains(serverCertSha256)) {
+                  return true;
+                } else {
+                  return false;
+                }
+              };
             }),
       );
     } else {
@@ -66,13 +80,19 @@ class DioUtil {
         createHttpClient: () {
           final HttpClient client = HttpClient();
           client.badCertificateCallback =
-              (X509Certificate cert, String host, int port) => true;
+              (X509Certificate cert, String host, int port) {
+            String serverCertSha256 = getCertSHA256Fingerprint(cert);
+            if (allowedSHAFingerprints.contains(serverCertSha256)) {
+              return true;
+            } else {
+              return false;
+            }
+          };
           return client;
         },
       );
     }
 
-    // dio请求执行流程：请求拦截器--请求转换器--发起请求--响应转换器--响应拦截器--最终结果
     // 添加拦截
     _dio.interceptors.add(DioInterceptors());
   }
@@ -164,4 +184,23 @@ class DioUtil {
           onSendProgress: onSendProgress,
           onReceiveProgress: onReceiveProgress,
           loading: loading);
+
+  // 获得证书的 SHA-256 指纹
+  String getCertSHA256Fingerprint(X509Certificate cert) {
+    try {
+      // 移除 PEM 编码的头尾标识和换行符
+      final String derBase64 = cert.pem
+          .replaceAll(RegExp(r'-----(BEGIN|END) CERTIFICATE-----'), '')
+          .replaceAll(RegExp(r'\s+'), '');
+
+      // 将清理后的 Base64 字符串解码为字节数组
+      final Uint8List derBytes = base64Decode(derBase64);
+
+      // 计算 SHA-256 指纹
+      final Digest digest = sha256.convert(derBytes);
+      return digest.toString();
+    } catch (e) {
+      return 'Failed to get certificate SHA-256 fingerprint';
+    }
+  }
 }
