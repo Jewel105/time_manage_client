@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:time_manage_client/api/common_api.dart';
 import 'package:time_manage_client/common/constant.dart';
 import 'package:time_manage_client/router/nav_ctrl.dart';
 import 'package:time_manage_client/router/routes.dart';
@@ -20,6 +21,7 @@ class Mine extends StatelessWidget {
           MainButton(
             text: "Log Out",
             onPressed: () async {
+              await CommonApi.logout();
               await StorageUtil.remove(Constant.TOKEN);
               NavCtrl.switchTab(Routes.home);
             },
