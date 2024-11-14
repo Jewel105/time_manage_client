@@ -9,9 +9,9 @@ class CommonApi {
     return response;
   }
 
-  // /common/user/log/out
+  // /common/user/session/logout
   static Future<bool> logout() async {
-    return await _dio.get(url: '/common/user/log/out');
+    return await _dio.get(url: '/common/user/session/logout');
   }
 
   static Future<int> register(Map<String, dynamic> data) async {
