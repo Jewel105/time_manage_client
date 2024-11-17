@@ -7,6 +7,9 @@
 
 # The following line activates a set of recommended lints for Flutter apps,
 # packages, and plugins designed to encourage good coding practices.
+analyzer:
+  errors:
+    avoid_equals_and_hash_code_on_mutable_classes: ignore
 include: package:flutter_lints/flutter.yaml
 
 linter:
@@ -21,7 +24,7 @@ linter:
   # `// ignore_for_file: name_of_lint` syntax on the line or in the file
   # producing the lint.
   rules:
-    prefer_single_quotes: true  # Uncomment to enable the `prefer_single_quotes` rule
+    prefer_single_quotes: true # Uncomment to enable the `prefer_single_quotes` rule
     always_specify_types: true
     always_use_package_imports: true
     avoid_dynamic_calls: true

@@ -43,13 +43,7 @@ class CategoryModel {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is CategoryModel &&
-        other.id == id &&
-        other.level == level &&
-        other.name == name &&
-        other.parentID == parentID &&
-        other.path == path &&
-        other.userID == userID;
+    return other is CategoryModel && other.id == id;
   }
 
   @override
