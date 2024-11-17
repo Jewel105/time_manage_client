@@ -68,14 +68,14 @@ publish_uat_ios(){
 }
 
 build_android(){
-  echo -e "开始打包: flutter build ${apk_mode} --dart-define=APP_ENV=${env_mode}"
-  flutter build ${apk_mode} --dart-define=APP_ENV=${env_mode}
+  echo -e "开始打包: flutter build ${apk_mode} --release --obfuscate --split-debug-info=./build --dart-define=APP_ENV=${env_mode}"
+  flutter build ${apk_mode} --release --obfuscate --split-debug-info=./build --dart-define=APP_ENV=${env_mode}
   publish_uat_android
 }
 
 build_ios(){
-  echo -e "开始打包: flutter build ipa --release --export-options-plist=$PWD/ios/${ios_mode}.plist --dart-define=APP_ENV=${env_mode} "
-  flutter build ipa --release --export-options-plist=$PWD/ios/${ios_mode}.plist --dart-define=APP_ENV=${env_mode}  
+  echo -e "开始打包: flutter build ipa --release --obfuscate --split-debug-info=./build --export-options-plist=$PWD/ios/${ios_mode}.plist --dart-define=APP_ENV=${env_mode} "
+  flutter build ipa --release --obfuscate --split-debug-info=./build --export-options-plist=$PWD/ios/${ios_mode}.plist --dart-define=APP_ENV=${env_mode}  
   publish_uat_ios
 }
 

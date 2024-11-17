@@ -9,6 +9,11 @@ class CommonApi {
     return response;
   }
 
+  // /common/user/session/logout
+  static Future<bool> logout() async {
+    return await _dio.get(url: '/common/user/session/logout');
+  }
+
   static Future<int> register(Map<String, dynamic> data) async {
     final int response = await _dio.post(
         url: '/common/user/register', data: data, loading: true);
