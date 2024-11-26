@@ -30,7 +30,7 @@ migrate_working_dir/
 .pub-cache/
 .pub/
 /build/
-.build*
+build.sh
 
 # Symbolication related
 app.*.symbols
